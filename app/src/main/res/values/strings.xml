@@ -29,5 +29,5 @@
     <string name="password_dont_match">Password doesn\'t match,please enter same password</string>
     <string name="enter_sector">Please enter your sector</string>
     <string name="under_construction">Under construction</string>
-    <string name="username_dont_match">username doesn\'t match</string>
+    <string name="username_dont_match">username/password doesn\'t match</string>
 </resources>

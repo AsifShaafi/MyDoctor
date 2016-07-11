@@ -90,7 +90,8 @@ public class LoginActivity extends AppCompatActivity {
     private void setupActionBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             // Show the Up button in the action bar.
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            if (getSupportActionBar() != null)
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 
@@ -143,15 +144,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private void checkAllField() {
 
-        if (TextUtils.isEmpty(mUsernameView.getText())) {
-            userTyped = false;
-        } else
-            userTyped = true;
+        userTyped = !TextUtils.isEmpty(mUsernameView.getText());
 
-        if (TextUtils.isEmpty(mPasswordView.getText()))
-            passwordTyped = false;
-        else
-            passwordTyped = true;
+        passwordTyped = !TextUtils.isEmpty(mPasswordView.getText());
 
     }
 
@@ -176,7 +171,8 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(this, "Network connection failed!\nCheck your internet connection", Toast.LENGTH_LONG).show();
             }
         } else {
-            Toast.makeText(LoginActivity.this, "Please fill all fields first", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(LoginActivity.this, "Please fill all fields first", Toast.LENGTH_SHORT).show();
+            warringAlert("Please fill all fields first");
             focusView.requestFocus();
         }
     }
@@ -273,8 +269,13 @@ public class LoginActivity extends AppCompatActivity {
                     Log.i("okhttp", jsonData);
 
                     if (jsonData.equals("not found")) {
-                        showProgress(false);
-                        warringAlert(getString(R.string.username_dont_match));
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                showProgress(false);
+                                warringAlert(getString(R.string.username_dont_match));
+                            }
+                        });
                     } else if (CURRENT_USER.equals(MainActivity.DOCTOR)) {
 
                         try {
@@ -305,6 +306,7 @@ public class LoginActivity extends AppCompatActivity {
                             Log.e("okhttp", e.getMessage());
                         }
                     } else if (CURRENT_USER.equals(MainActivity.PATIENT)) {
+                        //proceed for patient user
                     }
 
                 } else {
