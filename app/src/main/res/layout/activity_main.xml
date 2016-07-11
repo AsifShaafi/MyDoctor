@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/main_bg"
+    android:padding="8dp">
+
+    <RadioGroup
+        android:id="@+id/choiceGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="16dp"
+        android:showDividers="middle">
+
+        <RadioButton
+            android:id="@+id/doctor_radioButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:background="@drawable/radio_button_bg"
+            android:gravity="center"
+            android:padding="4dp"
+            android:paddingEnd="25dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="25dp"
+            android:paddingStart="10dp"
+            android:text="Doctor"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <RadioButton
+            android:id="@+id/patient_radioButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/radio_button_bg"
+            android:gravity="center"
+            android:padding="4dp"
+            android:paddingEnd="25dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="25dp"
+            android:paddingStart="10dp"
+            android:text="Patient"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/enterButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/enter_button_bg"
+        android:onClick="proceedToNextStep"
+        android:padding="10dp"
+        android:layout_margin="32dp"
+        android:text="Enter >>"
+        android:textColor="#0407be"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/welcomeTextView"
+        style="@style/Base.TextAppearance.AppCompat.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:text="Welcome user!"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#f7991f"
+        android:textSize="50sp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/choiceGroup"
+        android:layout_below="@+id/welcomeTextView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:text="Continue As..."
+        android:textSize="30sp"
+        android:textStyle="bold|italic"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+</RelativeLayout>

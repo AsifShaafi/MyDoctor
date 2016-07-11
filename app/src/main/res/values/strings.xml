@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">MyDoctor</string>
+    <string name="title_activity_login">Log in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_username">Username</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_log_in">Log In</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="click_here_to_register">Don\'t have a account?\n CLICK HERE to register</string>
+    <string name="full_name">Full Name</string>
+    <string name="register">Register</string>
+    <string name="the_field_is_rightly_filled">the field is rightly filled</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="retype_password">Retype Password</string>
+    <string name="sector_s">Sector/s</string>
+    <string name="enter_full_name">Please enter Full name</string>
+    <string name="enter_username">Please enter an unique username</string>
+    <string name="enter_password">Please enter a password</string>
+    <string name="reenter_password">Please retype the password</string>
+    <string name="password_dont_match">Password doesn\'t match,please enter same password</string>
+    <string name="enter_sector">Please enter your sector</string>
+    <string name="under_construction">Under construction</string>
+    <string name="username_dont_match">username doesn\'t match</string>
+</resources>
