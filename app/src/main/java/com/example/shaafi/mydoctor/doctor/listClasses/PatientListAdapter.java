@@ -2,7 +2,6 @@ package com.example.shaafi.mydoctor.doctor.listClasses;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +9,6 @@ import android.widget.TextView;
 
 import com.example.shaafi.mydoctor.R;
 import com.example.shaafi.mydoctor.doctor.PatientDetailsForDoctorList;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,7 +47,7 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
         return mPatientList.length;
     }
 
-    protected class ViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
+    protected class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.lsitPatientNameTextView)
         TextView mPatientName;
@@ -63,7 +60,7 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
             super(itemView);
             ButterKnife.bind(this, itemView);
 
-            itemView.setOnCreateContextMenuListener(this);
+            itemView.setOnClickListener(this);
         }
 
         protected void bindViews(PatientDetailsForDoctorList patient){
@@ -73,8 +70,8 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
         }
 
         @Override
-        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-            menu.add(0, R.id.action_delete, 0, "Delete");
+        public void onClick(View v) {
+
         }
     }
 }
