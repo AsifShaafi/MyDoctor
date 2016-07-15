@@ -8,31 +8,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Build;
+import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-
-import android.os.Build;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.shaafi.mydoctor.R;
 import com.example.shaafi.mydoctor.doctor.DoctorHomePage;
 import com.example.shaafi.mydoctor.doctor.DoctorRegistration;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -166,7 +160,7 @@ public class LoginActivity extends AppCompatActivity {
             // perform the user login attempt.
             if (hasNetworkConnection()) {
                 showProgress(true);
-                connectToNetwork(CURRENT_USER, mUsernameView.getText().toString());
+                connectToNetwork(CURRENT_USER, mUsernameView.getText().toString().toLowerCase());
             }else {
                 Toast.makeText(this, "Network connection failed!\nCheck your internet connection", Toast.LENGTH_LONG).show();
             }
@@ -290,7 +284,7 @@ public class LoginActivity extends AppCompatActivity {
                                     //Toast.makeText(LoginActivity.this, "username: " + username
                                             //+ "pass: " + password, Toast.LENGTH_SHORT).show();
 
-                                    if (password.equals(mPasswordView.getText().toString())) {
+                                    if (password.equals(mPasswordView.getText().toString().toLowerCase())) {
                                         showProgress(false);
                                         Intent intent = new Intent(LoginActivity.this, DoctorHomePage.class);
                                         intent.putExtra("doctorJsonData", jsonData);

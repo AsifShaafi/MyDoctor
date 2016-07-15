@@ -81,14 +81,6 @@ public class DoctorRegistration extends AppCompatActivity {
     }
 
     private void attemptRegistration() {
-        // Store values at the time of the registration attempt.
-        String name = dName.getText().toString();
-        String username = dUsername.getText().toString();
-        String password = dPassword.getText().toString();
-        String rePassword = dRePassword.getText().toString();
-        String sectors = dSectors.getText().toString();
-
-        //checking if all fields are correctly filled
 
         //name check:
         nameCheck();
@@ -255,7 +247,9 @@ public class DoctorRegistration extends AppCompatActivity {
     private void setupActionBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             // Show the Up button in the action bar.
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            }
         }
     }
 
@@ -302,8 +296,8 @@ public class DoctorRegistration extends AppCompatActivity {
         RequestBody formBody = new FormBody.Builder()
                 .add("submit", "submit")
                 .add("full_name", dName.getText().toString())
-                .add("user_name", dUsername.getText().toString())
-                .add("password", dPassword.getText().toString())
+                .add("user_name", dUsername.getText().toString().toLowerCase())
+                .add("password", dPassword.getText().toString().toLowerCase())
                 .add("sectors", dSectors.getText().toString())
                 .build();
 
