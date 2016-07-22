@@ -36,9 +36,12 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class ListActivity extends AppCompatActivity {
+public class ListActivity extends AppCompatActivity implements View.OnLongClickListener {
 
     PatientDetailsForDoctorList[] mPatientList;
+
+    public static boolean contextMoodOn = false;
+    PatientListAdapter adapter;
 
     @BindView(R.id.patientListRecyclerView)
     RecyclerView mRecyclerView;
@@ -59,7 +62,7 @@ public class ListActivity extends AppCompatActivity {
     private void refreshPatientList() {
 
         if (mPatientList != null) {
-            PatientListAdapter adapter = new PatientListAdapter(this, mPatientList);
+            adapter = new PatientListAdapter(this, this, mPatientList);
             mRecyclerView.setAdapter(adapter);
 
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -72,32 +75,32 @@ public class ListActivity extends AppCompatActivity {
             Drawable dividerDrawable = ContextCompat.getDrawable(this,
                     R.drawable.devider);
             mRecyclerView.addItemDecoration(new DividerItemDecoration(dividerDrawable));
-        }
-        else {
+        } else {
             mEmptyListMsg.setVisibility(View.VISIBLE);
             mEmptyListMsg.setText("No patient found");
         }
     }
 
-    public void addSupportActionBar(){
+    public void addSupportActionBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB
-                && getSupportActionBar() != null){
+                && getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
         }
         return true;
     }
 
+
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.action_delete){
+        if (item.getItemId() == R.id.action_delete) {
             //Toast.makeText(ListActivity.this, "clicked", Toast.LENGTH_SHORT).show();
         }
         return true;
@@ -147,8 +150,7 @@ public class ListActivity extends AppCompatActivity {
                     } catch (JSONException e) {
                         Log.e("patientList", e.getMessage());
                     }
-                }
-                else {
+                } else {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -164,7 +166,7 @@ public class ListActivity extends AppCompatActivity {
 
     private void setPatientListForDoctor(String jsonData) throws JSONException {
         //Toast.makeText(DoctorHomePage.this, jsonData, Toast.LENGTH_LONG).show();
-        Log.i("Djson" , jsonData);
+        Log.i("Djson", jsonData);
         JSONObject object = new JSONObject(jsonData);
         JSONArray array = object.getJSONArray("patient_list");
 
@@ -178,7 +180,7 @@ public class ListActivity extends AppCompatActivity {
             p.setName(jsonObject.getString("patient_name"));
             p.setUserID(jsonObject.getString("userId"));
             p.setAge(jsonObject.getString("age"));
-            Log.i("listP" , jsonObject.getString("patient_name"));
+            Log.i("listP", jsonObject.getString("patient_name"));
 
             mList[i] = p;
         }
@@ -195,6 +197,20 @@ public class ListActivity extends AppCompatActivity {
                 refreshPatientList();
             }
         });
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        int id = v.getId();
+        contextMoodOn = true;
+        adapter.notifyDataSetChanged();
+
+        return true;
+    }
+
+    public static void proceedInContextMenu(int id) {
+
+
     }
 
     public class DividerItemDecoration extends RecyclerView.ItemDecoration {

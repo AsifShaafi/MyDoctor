@@ -39,12 +39,10 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.doctor_radioButton:
-                        //Toast.makeText(getBaseContext(), "Doctor selected", Toast.LENGTH_SHORT).show();
                         doctorRadio.setBackgroundResource(R.drawable.radio_button_selected_bg);
                         patientRadio.setBackgroundResource(R.drawable.radio_button_bg);
                         break;
                     case R.id.patient_radioButton:
-                        //Toast.makeText(getBaseContext(), "Patient selected", Toast.LENGTH_SHORT).show();
                         patientRadio.setBackgroundResource(R.drawable.radio_button_selected_bg);
                         doctorRadio.setBackgroundResource(R.drawable.radio_button_bg);
                         break;
@@ -58,11 +56,9 @@ public class MainActivity extends AppCompatActivity {
         int selectedId = choiceRadioGroup.getCheckedRadioButtonId();
         switch (selectedId) {
             case R.id.doctor_radioButton:
-                //Toast.makeText(getBaseContext(), "Doctor selected", Toast.LENGTH_SHORT).show();
                 USER_MODE = DOCTOR;
                 return true;
             case R.id.patient_radioButton:
-                //Toast.makeText(getBaseContext(), "Patient selected", Toast.LENGTH_SHORT).show();
                 USER_MODE = PATIENT;
                 return true;
             default:

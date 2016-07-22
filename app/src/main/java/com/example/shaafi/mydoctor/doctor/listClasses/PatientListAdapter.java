@@ -1,10 +1,12 @@
 package com.example.shaafi.mydoctor.doctor.listClasses;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.example.shaafi.mydoctor.R;
@@ -20,10 +22,12 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
 
     PatientDetailsForDoctorList[] mPatientList;
     Context mContext;
+    ListActivity mListActivity;
 
-    public PatientListAdapter(Context context, PatientDetailsForDoctorList[] patientList) {
+    public PatientListAdapter(Context context,ListActivity activity, PatientDetailsForDoctorList[] patientList) {
         mContext = context;
         mPatientList = patientList;
+        mListActivity = activity;
     }
 
     @Override
@@ -31,7 +35,7 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.patient_list_row_view, parent, false);
 
-        ViewHolder holder = new ViewHolder(view);
+        ViewHolder holder = new ViewHolder(mListActivity,view);
 
         return holder;
     }
@@ -47,7 +51,8 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
         return mPatientList.length;
     }
 
-    protected class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    protected class ViewHolder extends RecyclerView.ViewHolder implements
+            View.OnClickListener {
 
         @BindView(R.id.lsitPatientNameTextView)
         TextView mPatientName;
@@ -55,12 +60,24 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
         TextView mPatientUserId;
         @BindView(R.id.listPatientAgeTextView)
         TextView mPatientAge;
+        @BindView(R.id.patientLsitCheckBox)
+        CheckBox mPatientCheckBox;
+        @BindView(R.id.patientListCardView)
+        CardView mPatientCardView;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(ListActivity activity, View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
+            if (ListActivity.contextMoodOn) {
+                mPatientCheckBox.setVisibility(View.VISIBLE);
+            }
+            else {
+                mPatientCheckBox.setVisibility(View.GONE);
+            }
+
             itemView.setOnClickListener(this);
+            mPatientCardView.setOnLongClickListener(activity);
         }
 
         protected void bindViews(PatientDetailsForDoctorList patient){
@@ -71,7 +88,9 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
 
         @Override
         public void onClick(View v) {
-
+            if (ListActivity.contextMoodOn) {
+                ListActivity.proceedInContextMenu(v.getId());
+            }
         }
     }
 }

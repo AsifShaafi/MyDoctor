@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.example.shaafi.mydoctor">
+    package="com.example.shaafi.mydoctor">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -13,9 +13,9 @@
         android:theme="@style/AppTheme">
         <activity android:name=".mainUi.MainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
@@ -24,7 +24,7 @@
             android:parentActivityName=".mainUi.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".mainUi.MainActivity"/>
+                android:value=".mainUi.MainActivity" />
         </activity>
         <activity
             android:name=".doctor.DoctorRegistration"
@@ -32,18 +32,31 @@
             android:parentActivityName=".mainUi.LoginActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".mainUi.LoginActivity"/>
+                android:value=".mainUi.LoginActivity" />
         </activity>
         <activity
             android:name=".doctor.DoctorHomePage"
             android:parentActivityName=".mainUi.LoginActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".mainUi.LoginActivity"/>
+                android:value=".mainUi.LoginActivity" />
         </activity>
         <activity
             android:name=".doctor.listClasses.ListActivity"
             android:parentActivityName=".doctor.DoctorHomePage">
+
+        </activity>
+        <activity
+            android:name=".patient.PatientHomePage"
+            android:label="Patient Details"
+            android:parentActivityName=".mainUi.LoginActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".mainUi.LoginActivity" />
+        </activity>
+        <activity android:name=".patient.AddDoctorForPatient"
+            android:theme="@style/AlertDialog.AppCompat.Light">
+
         </activity>
     </application>
 

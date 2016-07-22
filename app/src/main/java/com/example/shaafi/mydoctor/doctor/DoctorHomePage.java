@@ -37,6 +37,7 @@ public class DoctorHomePage extends AppCompatActivity {
         setupActionBar();
         ButterKnife.bind(this);
 
+        // get the json formatted string wraped data from the intent and pass it to parse it for doctor details
         String doctorJson = getIntent().getStringExtra("doctorJsonData");
         mDoctor = getDoctorObjectFromJson(doctorJson);
 
@@ -45,7 +46,10 @@ public class DoctorHomePage extends AppCompatActivity {
 
     }
 
-
+    /*
+        it takes a json formatted string and parse it and get the doctors details, sets it to a dummy
+        doctor object and then returns the dummy object
+     */
     private DoctorDetails getDoctorObjectFromJson(String doctorJson) {
         DoctorDetails mDoctor = new DoctorDetails();
 
@@ -63,6 +67,7 @@ public class DoctorHomePage extends AppCompatActivity {
         return mDoctor;
     }
 
+    //setting up the back/home button in the action bar to go to previous page
     private void setupActionBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             // Show the Up button in the action bar.
@@ -70,10 +75,12 @@ public class DoctorHomePage extends AppCompatActivity {
         }
     }
 
+    //get called when the button for patient list is clicked
     @OnClick(R.id.getPatientListButton)
     public void goToPatientList(View view) {
         Intent intent = new Intent(this, ListActivity.class);
-        //intent.putExtra(PATIENT_LIST, mDoctor.getPatientList());
+
+        //sends the doctors username as intent so that the patient list can be retrived
         intent.putExtra(PATIENT_LIST, mDoctor.getUsername());
         startActivity(intent);
     }

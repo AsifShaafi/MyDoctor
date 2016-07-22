@@ -2,14 +2,11 @@ package com.example.shaafi.mydoctor.doctor;
 
 import android.annotation.TargetApi;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +17,8 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.shaafi.mydoctor.R;
+import com.example.shaafi.mydoctor.mainUi.DialogClass;
+import com.example.shaafi.mydoctor.mainUi.NetworkConnection;
 
 import java.io.IOException;
 
@@ -38,6 +37,7 @@ public class DoctorRegistration extends AppCompatActivity {
     View focusView = null;
     private boolean bName, bUsername, bPassword, bRePassword, bSector;
     OkHttpClient client = new OkHttpClient();
+    public static String SECTOR_LIST;
 
 
     //binding the edit text variables
@@ -53,6 +53,8 @@ public class DoctorRegistration extends AppCompatActivity {
     EditText dSectors;
     @BindView(R.id.registrationButton)
     Button dRegistrationButton;
+    @BindView(R.id.sectorButton)
+    Button dSectorButton;
 
     //binding the image view variables
     @BindView(R.id.div_name)
@@ -74,12 +76,18 @@ public class DoctorRegistration extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_doctor_registration);
         setupActionBar();
+
+        //activating the ButteKnife for this activity to bind the views
         ButterKnife.bind(this);
 
         mProgressBar.setVisibility(View.INVISIBLE);
         attemptRegistration();
     }
 
+    /*
+        set the focus listener for all fields and checks if all the fields are filled correctly.
+        if field is not filled up error is shown. All the fields are separately set for this.
+     */
     private void attemptRegistration() {
 
         //name check:
@@ -95,7 +103,8 @@ public class DoctorRegistration extends AppCompatActivity {
         rePasswordCheck();
 
         //sectors check
-        sectorsCheck();
+        //sectorsCheck();
+        SECTOR_LIST = null;
     }
 
     private void nameCheck() {
@@ -147,10 +156,9 @@ public class DoctorRegistration extends AppCompatActivity {
             focusView = dUsername;
             bUsername = false;
         } else {
-            if (hasNetworkConnection()){
-            checkIfUsernameExists(dUsername.getText().toString());
-            }
-            else {
+            if (NetworkConnection.hasNetworkConnection(this)) {
+                checkIfUsernameExists(dUsername.getText().toString());
+            } else {
                 Toast.makeText(this, "Network connection failed!\nCheck your internet connection", Toast.LENGTH_LONG).show();
             }
         }
@@ -208,8 +216,7 @@ public class DoctorRegistration extends AppCompatActivity {
             if (dRePassword.getText().toString().equals(dPassword.getText().toString())) {
                 diRePassword.setVisibility(View.VISIBLE);
                 bRePassword = true;
-            }
-            else {
+            } else {
                 dRePassword.setError(getString(R.string.password_dont_match));
                 bRePassword = false;
             }
@@ -232,8 +239,13 @@ public class DoctorRegistration extends AppCompatActivity {
         });
     }
 
+
+    /*
+        checks if the sector field is filled or not, if not error is shown
+     */
     private void checkSectorsIfEmpty() {
-        if (TextUtils.isEmpty(dSectors.getText().toString())) {
+        SECTOR_LIST = dSectors.getText().toString();
+        if (TextUtils.isEmpty(SECTOR_LIST)) {
             dSectors.setError(getString(R.string.enter_sector));
             focusView = dSectors;
             bSector = false;
@@ -243,6 +255,25 @@ public class DoctorRegistration extends AppCompatActivity {
         }
     }
 
+    public void setSectors(View view) {
+        DialogClass.doctorSectorListDialog(this);
+    }
+
+    private void checkSectorButton() {
+        if (TextUtils.isEmpty(SECTOR_LIST)) {
+            dSectorButton.setError(getString(R.string.enter_sector));
+            DialogClass.warringAlert(this, "please select sector!");
+            bSector = false;
+        } else {
+            diSectors.setVisibility(View.VISIBLE);
+            dSectorButton.setError(null);
+            bSector = true;
+        }
+    }
+
+    /*
+        getting the action bar and setting the home button on it to go to previous activity
+     */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void setupActionBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -253,52 +284,44 @@ public class DoctorRegistration extends AppCompatActivity {
         }
     }
 
-    private boolean hasNetworkConnection() {
-
-        ConnectivityManager manager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
-
-        return networkInfo != null && networkInfo.isConnected();
-    }
-
     public void registerNewUser(View view) {
 
         checkNameIfEmpty();
         checkUsernameIfEmptyAndUnique();
         checkPasswordIfEmpty();
         checkRepasswordIfEmptyAndSame();
-        checkSectorsIfEmpty();
+        //checkSectorsIfEmpty();
+        checkSectorButton();
 
         Log.i("DoctorRegistration.this", bName + " "
-                 + bUsername + " "
+                + bUsername + " "
                 + bPassword + " "
                 + bRePassword + " "
                 + bSector + " ");
 
-        if (bName && bUsername && bPassword && bRePassword && bSector){
+        if (bName && bUsername && bPassword && bRePassword && bSector) {
 
-            if (hasNetworkConnection()) {
+            if (NetworkConnection.hasNetworkConnection(this)) {
                 registerDoctor();
-            }else {
+            } else {
                 Toast.makeText(this, "Network connection failed!\nCheck your internet connection", Toast.LENGTH_LONG).show();
             }
-        }
-        else {
+        } else if (focusView != null) {
             focusView.requestFocus();
         }
     }
 
     private void registerDoctor() {
-        //String url = "http://192.168.13.2/my_doctor/registerDoctor.php";
-        String url = "http://www.mydoctorbd.cf/registerDoctor.php";
+
+        String url = NetworkConnection.mainUrl + "registerDoctor.php";
         Log.i("okhttp", "started");
+        Toast.makeText(DoctorRegistration.this, SECTOR_LIST, Toast.LENGTH_SHORT).show();
         RequestBody formBody = new FormBody.Builder()
                 .add("submit", "submit")
                 .add("full_name", dName.getText().toString())
                 .add("user_name", dUsername.getText().toString().toLowerCase())
                 .add("password", dPassword.getText().toString().toLowerCase())
-                .add("sectors", dSectors.getText().toString())
+                .add("sectors", SECTOR_LIST)
                 .build();
 
         Request request = new Request.Builder()
@@ -314,7 +337,7 @@ public class DoctorRegistration extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        warringAlert("Registration failed");
+                        DialogClass.warringAlert(getBaseContext(), "Registration failed");
                     }
                 });
             }
@@ -330,19 +353,17 @@ public class DoctorRegistration extends AppCompatActivity {
                         public void run() {
                             if (result.equals("registered")) {
                                 successAlert("Registration complete.Please login with your username");
-                            }
-                            else {
-                                warringAlert("Sorry could not register,Please try again");
+                            } else {
+                                DialogClass.warringAlert(getBaseContext(), "Sorry could not register,Please try again");
                             }
                         }
                     });
 
-                }
-                else {
+                } else {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            warringAlert("There was some problem, please try again later");
+                            DialogClass.warringAlert(getBaseContext(), "There was some problem, please try again later");
                         }
                     });
                 }
@@ -350,18 +371,8 @@ public class DoctorRegistration extends AppCompatActivity {
         });
     }
 
-    private void warringAlert(String alert){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setCancelable(true)
-                .setTitle("Ups!!")
-                .setMessage(alert)
-                .setPositiveButton("OK", null);
 
-        Dialog dialog = builder.create();
-        dialog.show();
-    }
-
-    private void successAlert(String alert){
+    private void successAlert(String alert) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this)
                 .setCancelable(true)
                 .setTitle("Congrats!!")
@@ -398,7 +409,7 @@ public class DoctorRegistration extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        warringAlert("Registration failed");
+                        DialogClass.warringAlert(getBaseContext(), "Registration failed");
                     }
                 });
             }
@@ -416,24 +427,23 @@ public class DoctorRegistration extends AppCompatActivity {
                                 diUsername.setVisibility(View.VISIBLE);
                                 bUsername = true;
                                 dUsername.setError(null);
-                            }
-                            else {
-                                warringAlert("Sorry username already taken, use another one");
+                            } else {
+                                DialogClass.warringAlert(getBaseContext(), "Sorry username already taken, use another one");
                                 dUsername.setError("Enter unique username");
                             }
                         }
                     });
 
-                }
-                else {
+                } else {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            warringAlert("There was some problem, please try again later");
+                            DialogClass.warringAlert(getBaseContext(), "There was some problem, please try again later");
                         }
                     });
                 }
             }
         });
     }
+
 }

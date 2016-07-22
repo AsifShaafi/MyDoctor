@@ -30,4 +30,13 @@
     <string name="enter_sector">Please enter your sector</string>
     <string name="under_construction">Under construction</string>
     <string name="username_dont_match">username/password doesn\'t match</string>
+
+    <string-array name="doctor_sectors">
+        <item>Dentist</item>
+        <item>Eye specialist</item>
+        <item>Physician</item>
+        <item>Obstretics and Gynaecology</item>
+        <item>Surgery</item>
+        <item>Pathology</item>
+    </string-array>
 </resources>

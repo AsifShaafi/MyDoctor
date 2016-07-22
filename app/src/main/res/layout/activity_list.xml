@@ -1,31 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@drawable/main_bg"
+    android:orientation="vertical"
     tools:context="com.example.shaafi.mydoctor.doctor.listClasses.ListActivity">
 
     <TextView
+        android:id="@+id/listTitleTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Patient List"
-        android:id="@+id/listTitleTextView"
+        android:background="@drawable/radio_button_bg"
         android:gravity="center"
         android:padding="4dp"
+        android:text="Patient List"
         android:textColor="#de0a2d"
-        android:textSize="24sp"
-        android:background="@drawable/radio_button_bg"/>
+        android:textSize="24sp" />
 
     <ProgressBar
+        android:id="@+id/patientLsitProgressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/patientLsitProgressBar"
         android:layout_alignBottom="@+id/getPatientListButton"
-        android:visibility="invisible"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:visibility="invisible" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/patientListRecyclerView"
@@ -33,15 +32,15 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:fadeScrollbars="true"
-        android:padding="4dp"/>
+        android:padding="4dp" />
 
     <TextView
+        android:id="@+id/emptyList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:text="New Text"
         android:layout_gravity="center"
         android:textColor="#ffffffff"
         android:textSize="24sp"
         android:visibility="invisible"
-        android:id="@+id/emptyList"/>
+        tools:text="New Text" />
 </LinearLayout>

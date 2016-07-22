@@ -52,10 +52,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:layout_margin="32dp"
         android:background="@drawable/enter_button_bg"
         android:onClick="proceedToNextStep"
         android:padding="10dp"
-        android:layout_margin="32dp"
         android:text="Enter >>"
         android:textColor="#0407be"
         android:textSize="18sp" />
@@ -80,11 +80,11 @@
         android:layout_above="@+id/choiceGroup"
         android:layout_below="@+id/welcomeTextView"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
         android:layout_marginBottom="10dp"
+        android:layout_marginTop="20dp"
         android:text="Continue As..."
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:textSize="30sp"
-        android:textStyle="bold|italic"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textStyle="bold|italic" />
 
 </RelativeLayout>

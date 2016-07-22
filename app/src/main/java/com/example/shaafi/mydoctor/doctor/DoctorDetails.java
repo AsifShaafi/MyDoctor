@@ -1,7 +1,5 @@
 package com.example.shaafi.mydoctor.doctor;
 
-import java.util.List;
-
 /**
  * Created by Shaafi on 08-Jul-16.
  */
@@ -11,7 +9,6 @@ public class DoctorDetails {
     private String full_name;
     private String username;
     private String sectors;
-    private PatientDetailsForDoctorList[] patientList;
 
     public int getId() {
         return id;
@@ -45,11 +42,4 @@ public class DoctorDetails {
         this.sectors = sectors;
     }
 
-    public PatientDetailsForDoctorList[] getPatientList() {
-        return patientList;
-    }
-
-    public void setPatientList(PatientDetailsForDoctorList[] patientList) {
-        this.patientList = patientList;
-    }
 }
