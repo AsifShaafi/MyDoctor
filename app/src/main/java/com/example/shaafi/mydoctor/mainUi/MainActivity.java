@@ -19,19 +19,16 @@ public class MainActivity extends AppCompatActivity {
     public static final String DOCTOR = "doctor";
     public static final String PATIENT = "patient";
 
-    //binding the views with butter knife
-    @BindView(R.id.doctorButton)
-    Button mDoctorButton;
-
-    @BindView(R.id.patientButton)
-    Button mPatientButton;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
 
+    /*
+        method is called when any button is pressed and an intent starts login activity
+         with a parameter deciding the user mood
+     */
     public void proceedToNextStep(View view) {
         Intent intent = new Intent(this, LoginActivity.class);
 
