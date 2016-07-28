@@ -1,18 +1,28 @@
 package com.example.shaafi.mydoctor.patient;
 
 import android.annotation.TargetApi;
+import android.app.Dialog;
+import android.content.Intent;
 import android.os.Build;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import com.example.shaafi.mydoctor.R;
+import com.example.shaafi.mydoctor.mainUi.DialogClass;
 import com.example.shaafi.mydoctor.mainUi.LoginActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class PatientHomePage extends AppCompatActivity {
+
+    public static String PATIENT_DATA_LIST;
 
     PatientDetails mPatientDetails;
 
@@ -34,13 +44,36 @@ public class PatientHomePage extends AppCompatActivity {
         String jsonForPatient = getIntent().getStringExtra(LoginActivity.PATIENT_JSON_DATA);
         mPatientDetails = getPatientDetailsFromJsonString(jsonForPatient);
 
+        setViewInLayout(mPatientDetails);
+
     }
 
+    private void setViewInLayout(PatientDetails mPatientDetails) {
+        mPatientName.setText(mPatientDetails.getFullName());
+        mPatientUsername.setText(mPatientDetails.getUserName());
+        mPatientAge.setText(mPatientDetails.getAge());
+    }
+
+    /*
+        making a dummy patient object and populating it with the data found from the jsonString
+        which was sent from the intent and then returning the dummy object to populate the main object
+     */
     private PatientDetails getPatientDetailsFromJsonString(String jsonForPatient) {
 
         PatientDetails dummyPatient = new PatientDetails();
 
+        try {
+            JSONObject object = new JSONObject(jsonForPatient);
+            JSONObject patientObject = object.getJSONObject("patient");
 
+            dummyPatient.setFullName(patientObject.getString("name"));
+            dummyPatient.setUserName(patientObject.getString("username"));
+            dummyPatient.setAge(patientObject.getString("age"));
+            dummyPatient.setBirthDay(patientObject.getString("birthday"));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         return dummyPatient;
     }
@@ -56,5 +89,27 @@ public class PatientHomePage extends AppCompatActivity {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             }
         }
+    }
+
+    public void proceedToAddDoctor(View view) {
+        Intent intent = new Intent(this, AddDoctorForPatient.class);
+        intent.putExtra("patient_username", mPatientDetails.getUserName());
+        intent.putExtra("patient_name", mPatientDetails.getFullName());
+        intent.putExtra("age", mPatientDetails.getAge());
+        startActivity(intent);
+    }
+
+    public void proceedToAddData(View view) {
+        DialogClass.dataListForPatient(this);
+    }
+
+    public void showPatientData(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+                .setTitle("PatientData")
+                .setMessage(PATIENT_DATA_LIST)
+                .setPositiveButton("OK", null);
+
+        Dialog dialog = builder.create();
+        dialog.show();
     }
 }

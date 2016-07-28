@@ -43,9 +43,7 @@
         </activity>
         <activity
             android:name=".doctor.listClasses.ListActivity"
-            android:parentActivityName=".doctor.DoctorHomePage">
-
-        </activity>
+            android:parentActivityName=".doctor.DoctorHomePage" />
         <activity
             android:name=".patient.PatientHomePage"
             android:label="Patient Details"
@@ -54,10 +52,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".mainUi.LoginActivity" />
         </activity>
-        <activity android:name=".patient.AddDoctorForPatient"
-            android:theme="@style/AlertDialog.AppCompat.Light">
-
-        </activity>
+        <activity
+            android:name=".patient.AddDoctorForPatient"
+            android:theme="@style/Theme.AppCompat.Dialog.Alert" />
+        <activity android:name=".patient.PatientRegistration" />
     </application>
 
 </manifest>

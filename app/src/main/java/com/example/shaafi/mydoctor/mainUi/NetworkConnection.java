@@ -24,10 +24,32 @@ public class NetworkConnection {
             use them whenever we need them without writing editional code in each class
      */
 
+    /*
+            main website link
+     */
     public static final String mainUrl = "http://www.mydoctorbd.cf/";
-    //String url = "http://192.168.13.2/my_doctor/registerDoctor.php";
+
+    /*
+            testing link,,database in localhost
+     */
+//    public static final String mainUrl = "http://192.168.0.102/my_doctor/";
 
     private static Context mContext;
+
+    /*
+       a warring alert for user about the error.
+    */
+    public static void warringAlert( String alert) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext)
+                .setCancelable(true)
+                .setTitle("Ups!!")
+                .setMessage(alert)
+                .setPositiveButton("OK", null);
+
+        Dialog dialog = builder.create();
+        dialog.show();
+    }
 
     /*
         Checks if the the user is connected to the internet/network or not.

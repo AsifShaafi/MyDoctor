@@ -1,5 +1,6 @@
 package com.example.shaafi.mydoctor.mainUi;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -7,8 +8,10 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -17,6 +20,7 @@ import com.example.shaafi.mydoctor.R;
 import com.example.shaafi.mydoctor.doctor.DoctorHomePage;
 import com.example.shaafi.mydoctor.doctor.DoctorRegistration;
 import com.example.shaafi.mydoctor.patient.PatientHomePage;
+import com.example.shaafi.mydoctor.patient.PatientRegistration;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -59,6 +63,7 @@ public class LoginActivity extends AppCompatActivity {
 
         setOnFocusForFields();
         mProgressDialog = new ProgressDialog(LoginActivity.this);
+        mProgressDialog.setCancelable(false);
 
         // Set up the login form.
         if (CURRENT_USER.equals(MainActivity.PATIENT)) {
@@ -133,7 +138,19 @@ public class LoginActivity extends AppCompatActivity {
      */
     private void proceedToLogin() {
 
-        if (userTyped && passwordTyped) {
+        if (userTyped && passwordTyped && CURRENT_USER.equals(MainActivity.DOCTOR)) {
+            // Show a progress spinner, and kick off a background task to
+            // perform the user login attempt.
+            if (NetworkConnection.hasNetworkConnection(this)) {
+                //showProgress(true);
+                connectToNetwork(CURRENT_USER, mUsernameView.getText().toString().toLowerCase());
+            } else {
+                Toast.makeText(this,
+                        "Network connection failed!\nCheck your internet connection",
+                        Toast.LENGTH_LONG)
+                        .show();
+            }
+        } else if (userTyped && CURRENT_USER.equals(MainActivity.PATIENT)) {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             if (NetworkConnection.hasNetworkConnection(this)) {
@@ -146,7 +163,7 @@ public class LoginActivity extends AppCompatActivity {
                         .show();
             }
         } else {
-            DialogClass.warringAlert(getBaseContext(), "Please fill all fields first");
+            DialogClass.warringAlert(LoginActivity.this,"Please fill all fields first");
             focusView.requestFocus();
         }
     }
@@ -169,7 +186,7 @@ public class LoginActivity extends AppCompatActivity {
         if (CURRENT_USER.equals(MainActivity.DOCTOR)) {
             startActivity(new Intent(this, DoctorRegistration.class));
         } else {
-            Toast.makeText(this, R.string.under_construction, Toast.LENGTH_LONG).show();
+            startActivity(new Intent(this, PatientRegistration.class));
         }
     }
 
@@ -185,7 +202,7 @@ public class LoginActivity extends AppCompatActivity {
             //url = "http://192.168.13.2/my_doctor/checkUserAsDoctor.php";
             path = "checkUserAsDoctor.php";
         } else {
-            path = "";
+            path = "checkUserAsPatient.php";
         }
 
         /*
@@ -220,7 +237,7 @@ public class LoginActivity extends AppCompatActivity {
 
         /*
             called before the background task is done.. a progress dialog is shown to let the user
-            know that checking is happenning in the background
+            know that checking is happening in the background
          */
         @Override
         protected void onPreExecute() {
@@ -248,12 +265,10 @@ public class LoginActivity extends AppCompatActivity {
 
             mProgressDialog.dismiss();
 
-            Toast.makeText(mContext, jsonData, Toast.LENGTH_SHORT).show();
-
             if (jsonData != null) {
 
                 if (jsonData.equals("not found")) {
-                    DialogClass.warringAlert(getBaseContext(), getString(R.string.username_dont_match));
+                    DialogClass.warringAlert(LoginActivity.this, getString(R.string.username_dont_match));
                 } else {
                     try {
 
@@ -262,7 +277,10 @@ public class LoginActivity extends AppCompatActivity {
                         JSONObject jsonObject;
 
                         //checking if the child json object is of doctor_json_object or patient_json_object
-                        if ((jsonObject = object.getJSONObject("doctor")) != null) {
+                        //Toast.makeText(getBaseContext(), jsonData, Toast.LENGTH_SHORT).show();
+
+                        if (jsonData.contains("doctor")) {
+                            jsonObject = object.getJSONObject("doctor");
                             String password = jsonObject.getString("password");
                             if (password.equals(mPasswordView.getText().toString().toLowerCase())) {
 
@@ -276,26 +294,24 @@ public class LoginActivity extends AppCompatActivity {
                                 intent.putExtra(DOCTOR_JSON_DATA, jsonData);
                                 startActivity(intent);
                             } else {
-                                DialogClass.warringAlert(getBaseContext(), getString(R.string.username_dont_match));
+                                DialogClass.warringAlert(LoginActivity.this,getString(R.string.username_dont_match));
                             }
 
-                        }
-                        else if ((jsonObject = object.getJSONObject("patient")) != null)
-                        {
+                        } else if (jsonData.contains("patient")) {
                             Intent intent = new Intent(LoginActivity.this, PatientHomePage.class);
                             intent.putExtra(PATIENT_JSON_DATA, jsonData);
                             startActivity(intent);
                         }
 
-
                     } catch (JSONException e) {
-                        e.printStackTrace();
+                        Log.e("json", e.getMessage());
                     }
                 }
             } else {
-                DialogClass.warringAlert(getBaseContext(), "Network error, please check your connection and try again!");
+                DialogClass.warringAlert(LoginActivity.this, "Network error, please check your connection and try again!");
             }
         }
     }
+
 }
 

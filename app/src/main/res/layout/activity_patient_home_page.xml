@@ -89,6 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Add Doctor"
+            android:onClick="proceedToAddDoctor"
             android:textAllCaps="false" />
 
         <Button
@@ -97,7 +98,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="View Data List"
-            android:textAllCaps="false" />
+            android:textAllCaps="false"
+            android:onClick="showPatientData"/>
 
         <Button
             android:id="@+id/addDataButton"
@@ -105,7 +107,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Add Data"
-            android:textAllCaps="false" />
+            android:textAllCaps="false"
+            android:onClick="proceedToAddData"/>
 
     </LinearLayout>
 

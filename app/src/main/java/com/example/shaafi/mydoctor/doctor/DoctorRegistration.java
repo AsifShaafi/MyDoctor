@@ -2,6 +2,7 @@ package com.example.shaafi.mydoctor.doctor;
 
 import android.annotation.TargetApi;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
@@ -38,6 +39,7 @@ public class DoctorRegistration extends AppCompatActivity {
     private boolean bName, bUsername, bPassword, bRePassword, bSector;
     OkHttpClient client = new OkHttpClient();
     public static String SECTOR_LIST;
+    private Context mContext = DoctorRegistration.this;
 
 
     //binding the edit text variables
@@ -223,38 +225,6 @@ public class DoctorRegistration extends AppCompatActivity {
         }
     }
 
-    private void sectorsCheck() {
-        dSectors.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    //dSectors.setError(null);
-                    diSectors.setVisibility(View.INVISIBLE);
-                    //Toast.makeText(getBaseContext(), "has focus", Toast.LENGTH_SHORT).show();
-                } else {
-                    //Toast.makeText(getBaseContext(), "lost focus", Toast.LENGTH_SHORT).show();
-                    checkSectorsIfEmpty();
-                }
-            }
-        });
-    }
-
-
-    /*
-        checks if the sector field is filled or not, if not error is shown
-     */
-    private void checkSectorsIfEmpty() {
-        SECTOR_LIST = dSectors.getText().toString();
-        if (TextUtils.isEmpty(SECTOR_LIST)) {
-            dSectors.setError(getString(R.string.enter_sector));
-            focusView = dSectors;
-            bSector = false;
-        } else {
-            diSectors.setVisibility(View.VISIBLE);
-            bSector = true;
-        }
-    }
-
     public void setSectors(View view) {
         DialogClass.doctorSectorListDialog(this);
     }
@@ -262,7 +232,8 @@ public class DoctorRegistration extends AppCompatActivity {
     private void checkSectorButton() {
         if (TextUtils.isEmpty(SECTOR_LIST)) {
             dSectorButton.setError(getString(R.string.enter_sector));
-            DialogClass.warringAlert(this, "please select sector!");
+
+            DialogClass.warringAlert(mContext, "please select sector!");
             bSector = false;
         } else {
             diSectors.setVisibility(View.VISIBLE);
@@ -336,8 +307,7 @@ public class DoctorRegistration extends AppCompatActivity {
             public void onFailure(Call call, IOException e) {
                 runOnUiThread(new Runnable() {
                     @Override
-                    public void run() {
-                        DialogClass.warringAlert(getBaseContext(), "Registration failed");
+                    public void run() {DialogClass.warringAlert(mContext, "Registration failed");
                     }
                 });
             }
@@ -354,7 +324,7 @@ public class DoctorRegistration extends AppCompatActivity {
                             if (result.equals("registered")) {
                                 successAlert("Registration complete.Please login with your username");
                             } else {
-                                DialogClass.warringAlert(getBaseContext(), "Sorry could not register,Please try again");
+                                DialogClass.warringAlert(mContext, "Sorry could not register,Please try again");
                             }
                         }
                     });
@@ -363,7 +333,7 @@ public class DoctorRegistration extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            DialogClass.warringAlert(getBaseContext(), "There was some problem, please try again later");
+                            DialogClass.warringAlert(mContext, "There was some problem, please try again later");
                         }
                     });
                 }
@@ -390,8 +360,7 @@ public class DoctorRegistration extends AppCompatActivity {
     }
 
     private void checkIfUsernameExists(String username) {
-//        String url = "http://192.168.13.2/my_doctor/checkUserAsDoctor.php";
-        String url = "http://www.mydoctorbd.cf/checkUserAsDoctor.php";
+        String url = NetworkConnection.mainUrl + "checkUserAsDoctor.php";
         RequestBody formBody = new FormBody.Builder()
                 .add("submit", "submit")
                 .add("username", username)
@@ -409,7 +378,7 @@ public class DoctorRegistration extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        DialogClass.warringAlert(getBaseContext(), "Registration failed");
+                        DialogClass.warringAlert(mContext, "Registration failed");
                     }
                 });
             }
@@ -428,7 +397,7 @@ public class DoctorRegistration extends AppCompatActivity {
                                 bUsername = true;
                                 dUsername.setError(null);
                             } else {
-                                DialogClass.warringAlert(getBaseContext(), "Sorry username already taken, use another one");
+                                DialogClass.warringAlert(mContext,"Sorry username already taken, use another one");
                                 dUsername.setError("Enter unique username");
                             }
                         }
@@ -438,7 +407,7 @@ public class DoctorRegistration extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            DialogClass.warringAlert(getBaseContext(), "There was some problem, please try again later");
+                            DialogClass.warringAlert(mContext, "There was some problem, please try again later");
                         }
                     });
                 }

@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.shaafi.mydoctor.R;
 import com.example.shaafi.mydoctor.doctor.DoctorHomePage;
 import com.example.shaafi.mydoctor.doctor.PatientDetailsForDoctorList;
+import com.example.shaafi.mydoctor.mainUi.NetworkConnection;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -112,7 +113,7 @@ public class ListActivity extends AppCompatActivity implements View.OnLongClickL
         mRecyclerView.setVisibility(View.INVISIBLE);
 
         //String url = "http://192.168.13.2/my_doctor/getPatientList.php";
-        String url = "http://www.mydoctorbd.cf/getPatientList.php";
+        String url = NetworkConnection.mainUrl + "getPatientList.php";
         OkHttpClient client = new OkHttpClient();
 
         RequestBody formBody = new FormBody.Builder()
@@ -166,7 +167,7 @@ public class ListActivity extends AppCompatActivity implements View.OnLongClickL
 
     private void setPatientListForDoctor(String jsonData) throws JSONException {
         //Toast.makeText(DoctorHomePage.this, jsonData, Toast.LENGTH_LONG).show();
-        Log.i("Djson", jsonData);
+        //Log.i("Djson", jsonData);
         JSONObject object = new JSONObject(jsonData);
         JSONArray array = object.getJSONArray("patient_list");
 
@@ -178,9 +179,9 @@ public class ListActivity extends AppCompatActivity implements View.OnLongClickL
 
             JSONObject jsonObject = array.getJSONObject(i);
             p.setName(jsonObject.getString("patient_name"));
-            p.setUserID(jsonObject.getString("userId"));
+            p.setUserID(jsonObject.getString("patient_username"));
             p.setAge(jsonObject.getString("age"));
-            Log.i("listP", jsonObject.getString("patient_name"));
+            //Log.i("listP", jsonObject.getString("patient_name"));
 
             mList[i] = p;
         }
