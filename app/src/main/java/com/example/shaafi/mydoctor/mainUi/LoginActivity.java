@@ -49,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
 
     ProgressDialog mProgressDialog;
 
-    private final String CURRENT_USER = MainActivity.USER_MODE;
+    private String CURRENT_USER;
     View focusView = null;
     boolean userTyped = false;
     boolean passwordTyped = false;
@@ -60,6 +60,9 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         setupActionBar();
+
+        //setting the user mood from intent
+        CURRENT_USER = getIntent().getStringExtra(MainActivity.USER_MOOD);
 
         setOnFocusForFields();
         mProgressDialog = new ProgressDialog(LoginActivity.this);
