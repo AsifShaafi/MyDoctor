@@ -35,10 +35,10 @@ public class MainActivity extends AppCompatActivity {
         switch (view.getId())
         {
             case R.id.doctorButton:
-                intent.putExtra(USER_MOOD, DOCTOR);
+                LoginActivity.CURRENT_USER = DOCTOR;
                 break;
             case R.id.patientButton:
-                intent.putExtra(USER_MOOD, PATIENT);
+                LoginActivity.CURRENT_USER = PATIENT;
                 break;
         }
 

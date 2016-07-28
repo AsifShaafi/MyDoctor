@@ -21,11 +21,7 @@
         <activity
             android:name=".mainUi.LoginActivity"
             android:label="@string/title_activity_login"
-            android:parentActivityName=".mainUi.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".mainUi.MainActivity" />
-        </activity>
+            android:parentActivityName=".mainUi.MainActivity" />
         <activity
             android:name=".doctor.DoctorRegistration"
             android:label="Doctor&apos;s Registration"

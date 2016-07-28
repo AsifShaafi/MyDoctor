@@ -12,6 +12,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -49,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
 
     ProgressDialog mProgressDialog;
 
-    private String CURRENT_USER;
+    public static String CURRENT_USER;
     View focusView = null;
     boolean userTyped = false;
     boolean passwordTyped = false;
@@ -60,9 +61,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         setupActionBar();
-
-        //setting the user mood from intent
-        CURRENT_USER = getIntent().getStringExtra(MainActivity.USER_MOOD);
 
         setOnFocusForFields();
         mProgressDialog = new ProgressDialog(LoginActivity.this);
@@ -84,9 +82,18 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+        }
+        return true;
+    }
+
     /*  setting the focus change in the edit text fields so that when a user leaves a editTextField
-     *  it checks if it is filled up or nor,, if not then show error
-     */
+         *  it checks if it is filled up or nor,, if not then show error
+         */
     private void setOnFocusForFields() {
         //focus change for password field
         mPasswordView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
