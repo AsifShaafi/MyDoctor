@@ -18,8 +18,8 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.shaafi.mydoctor.R;
-import com.example.shaafi.mydoctor.mainUi.DialogClass;
-import com.example.shaafi.mydoctor.mainUi.NetworkConnection;
+import com.example.shaafi.mydoctor.utilities.DialogClass;
+import com.example.shaafi.mydoctor.utilities.NetworkConnection;
 
 import java.io.IOException;
 

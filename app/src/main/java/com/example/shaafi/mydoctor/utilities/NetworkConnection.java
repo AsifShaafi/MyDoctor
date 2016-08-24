@@ -1,4 +1,4 @@
-package com.example.shaafi.mydoctor.mainUi;
+package com.example.shaafi.mydoctor.utilities;
 
 import android.app.Dialog;
 import android.content.Context;

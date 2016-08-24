@@ -4,15 +4,15 @@ import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
 import com.example.shaafi.mydoctor.R;
-import com.example.shaafi.mydoctor.mainUi.DialogClass;
 import com.example.shaafi.mydoctor.mainUi.LoginActivity;
+import com.example.shaafi.mydoctor.utilities.DialogClass;
 
 import org.json.JSONException;
 import org.json.JSONObject;

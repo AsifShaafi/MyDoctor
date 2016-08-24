@@ -21,7 +21,7 @@ import android.widget.Toast;
 import com.example.shaafi.mydoctor.R;
 import com.example.shaafi.mydoctor.doctor.DoctorHomePage;
 import com.example.shaafi.mydoctor.doctor.PatientDetailsForDoctorList;
-import com.example.shaafi.mydoctor.mainUi.NetworkConnection;
+import com.example.shaafi.mydoctor.utilities.NetworkConnection;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -1,6 +1,5 @@
 package com.example.shaafi.mydoctor.mainUi;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -8,7 +7,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -22,6 +20,8 @@ import com.example.shaafi.mydoctor.doctor.DoctorHomePage;
 import com.example.shaafi.mydoctor.doctor.DoctorRegistration;
 import com.example.shaafi.mydoctor.patient.PatientHomePage;
 import com.example.shaafi.mydoctor.patient.PatientRegistration;
+import com.example.shaafi.mydoctor.utilities.DialogClass;
+import com.example.shaafi.mydoctor.utilities.NetworkConnection;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,7 +61,11 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         setupActionBar();
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
         setOnFocusForFields();
         mProgressDialog = new ProgressDialog(LoginActivity.this);
         mProgressDialog.setCancelable(false);
@@ -71,7 +75,6 @@ public class LoginActivity extends AppCompatActivity {
             mTextInputLayout.setVisibility(View.INVISIBLE);
             passwordTyped = true;
         }
-
     }
 
     //setting up the back/home button in the action bar to go to previous page

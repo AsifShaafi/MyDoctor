@@ -1,19 +1,26 @@
 package com.example.shaafi.mydoctor.patient;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.example.shaafi.mydoctor.R;
-import com.example.shaafi.mydoctor.mainUi.NetworkConnection;
+import com.example.shaafi.mydoctor.utilities.NetworkConnection;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import butterknife.BindView;
@@ -26,7 +33,14 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static com.example.shaafi.mydoctor.utilities.DialogClass.successAlert;
+import static com.example.shaafi.mydoctor.utilities.DialogClass.warringAlert;
+
 public class PatientRegistration extends AppCompatActivity {
+
+    public static final int REQUEST_CODE = 100;
+    private Bitmap bitmap;
+    private String image_encoded_string;
 
     @BindView(R.id.patient_name)
     EditText mPatientName;
@@ -36,6 +50,8 @@ public class PatientRegistration extends AppCompatActivity {
     EditText mPatientAge;
     @BindView(R.id.patient_reg_progressBar)
     ProgressBar mProgress;
+    @BindView(R.id.uploadImageView)
+    ImageView mUplodedImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,38 +59,6 @@ public class PatientRegistration extends AppCompatActivity {
         setContentView(R.layout.activity_patient_registration);
         ButterKnife.bind(this);
         mProgress.setVisibility(View.GONE);
-    }
-
-    /*
-    a warring alert for user about the error.
- */
-    public void warringAlert(String alert) {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setCancelable(true)
-                .setTitle("Ups!!")
-                .setMessage(alert)
-                .setPositiveButton("OK", null);
-
-        Dialog dialog = builder.create();
-        dialog.show();
-    }
-
-    private void successAlert(String alert) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setCancelable(true)
-                .setTitle("Congrats!!")
-                .setMessage(alert)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                })
-                .setCancelable(false);
-
-        Dialog dialog = builder.create();
-        dialog.show();
     }
 
     /*
@@ -93,10 +77,35 @@ public class PatientRegistration extends AppCompatActivity {
         }
         else if(!NetworkConnection.hasNetworkConnection(getBaseContext()))
         {
-            warringAlert("please check your internet connection");
+            warringAlert(PatientRegistration.this, "please check your internet connection");
         }
         else {
-            warringAlert("please fill all fields");
+            warringAlert(PatientRegistration.this, "please fill all fields");
+        }
+    }
+
+    /*
+        pick image from gallery
+     */
+    public void pickImageForUpload(View view) {
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(galleryIntent, REQUEST_CODE);
+    }
+
+    /*
+        set image to the imageview and get it ready for uploading by converting it to a encoded string
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            Uri image = data.getData();
+            mUplodedImage.setImageURI(image);
+            bitmap = ((BitmapDrawable) mUplodedImage.getDrawable()).getBitmap();
+
+            //starting to convert the image into encode image
+            EncodeAndUploadImage encodeAndUploadImage = new EncodeAndUploadImage();
+            encodeAndUploadImage.execute();
         }
     }
 
@@ -114,6 +123,7 @@ public class PatientRegistration extends AppCompatActivity {
                 .add("name", mPatientName.getText().toString())
                 .add("username", mPatientUsername.getText().toString())
                 .add("age", mPatientAge.getText().toString())
+                .add("image", image_encoded_string)
                 .build();
 
         final Request request = new Request.Builder()
@@ -130,7 +140,7 @@ public class PatientRegistration extends AppCompatActivity {
                     @Override
                     public void run() {
                         mProgress.setVisibility(View.GONE);
-                        warringAlert("Registration failed");
+                        warringAlert(PatientRegistration.this, "Registration failed");
                     }
                 });
             }
@@ -147,11 +157,11 @@ public class PatientRegistration extends AppCompatActivity {
                             if (result.equals("registered")) {
 
                                 mProgress.setVisibility(View.GONE);
-                                successAlert("Registration Successful, Please login to continue!");
+                                successAlert(PatientRegistration.this, "Registration Successful, Please login to continue!");
 
                             } else if (result.equals("found")){
                                 mProgress.setVisibility(View.GONE);
-                                warringAlert("Sorry username already taken, use another one");
+                                warringAlert(PatientRegistration.this, "Sorry username already taken, use another one");
                             }
                         }
                     });
@@ -161,11 +171,44 @@ public class PatientRegistration extends AppCompatActivity {
                         @Override
                         public void run() {
                             mProgress.setVisibility(View.GONE);
-                            warringAlert( "There was some problem, please try again later");
+                            warringAlert(PatientRegistration.this, "There was some problem, please try again later");
                         }
                     });
                 }
             }
         });
+    }
+
+    /*
+        a async class to convert the image into a encoded string
+     */
+    private class EncodeAndUploadImage extends AsyncTask<Void, Void, Void> {
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            Log.i("upload_image", "onPreExecute: process started");
+
+            Toast.makeText(getBaseContext(), "started", Toast.LENGTH_SHORT).show();
+
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+
+            image_encoded_string = Base64.encodeToString(stream.toByteArray(), Base64.DEFAULT);
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+
+            Log.i("upload_image", "onPostExecute: process end::: " + image_encoded_string);
+            Toast.makeText(getBaseContext(), "ended encoding", Toast.LENGTH_SHORT).show();
+        }
     }
 }

@@ -1,10 +1,10 @@
-package com.example.shaafi.mydoctor.mainUi;
+package com.example.shaafi.mydoctor.utilities;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 
 import com.example.shaafi.mydoctor.R;
 import com.example.shaafi.mydoctor.doctor.DoctorRegistration;
@@ -14,7 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Shaafi on 03-Jul-16.
+ * Created by Asif Imiaz Shaafi, on 03-Jul-16.
+ * Email: a15shaafi.209@gmail.com
  */
 public class DialogClass {
 
@@ -37,6 +38,27 @@ public class DialogClass {
         Dialog dialog = builder.create();
         dialog.show();
     }
+
+    /*
+        when the registration is successful show this success msg
+     */
+    public static void successAlert(final Activity activity, String alert) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity)
+                .setCancelable(true)
+                .setTitle("Congrats!!")
+                .setMessage(alert)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        activity.finish();
+                    }
+                })
+                .setCancelable(false);
+
+        Dialog dialog = builder.create();
+        dialog.show();
+    }
+
 
     /*
         a dialog fragment in alert dialog form where doctor can choose the sectors of his/her, select

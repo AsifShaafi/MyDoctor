@@ -2,9 +2,9 @@ package com.example.shaafi.mydoctor.patient;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -12,7 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.shaafi.mydoctor.R;
-import com.example.shaafi.mydoctor.mainUi.NetworkConnection;
+import com.example.shaafi.mydoctor.utilities.NetworkConnection;
 
 import java.io.IOException;
 
