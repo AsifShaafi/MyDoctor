@@ -38,6 +38,7 @@
                 android:value=".mainUi.LoginActivity" />
         </activity>
         <activity
+            android:theme="@style/ToolbarTheme"
             android:name=".doctor.listClasses.ListActivity"
             android:parentActivityName=".doctor.DoctorHomePage" />
         <activity

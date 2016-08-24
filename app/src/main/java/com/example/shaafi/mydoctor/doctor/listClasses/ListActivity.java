@@ -9,9 +9,11 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +28,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,13 +47,19 @@ public class ListActivity extends AppCompatActivity implements View.OnLongClickL
 
     public static boolean contextMoodOn = false;
     PatientListAdapter adapter;
+    List<PatientDetailsForDoctorList> selectedList = new ArrayList<>();
+    int counter = 0;
 
     @BindView(R.id.patientListRecyclerView)
     RecyclerView mRecyclerView;
     @BindView(R.id.emptyList)
     TextView mEmptyListMsg;
-    @BindView(R.id.patientLsitProgressBar)
+    @BindView(R.id.patientListProgressBar)
     ProgressBar mDoctorProgressBar;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.toolbarText)
+    TextView mToolbarText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +70,42 @@ public class ListActivity extends AppCompatActivity implements View.OnLongClickL
         getPatientList(getIntent().getStringExtra(DoctorHomePage.PATIENT_LIST));
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        contextMoodOn = false;
+        setSupportActionBar(mToolbar);
+        addSupportActionBar();
+        mToolbarText.setVisibility(View.GONE);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_delete:
+                //adapter.updateAdapter(selectedList);
+                if (contextMoodOn) {
+                    adapter.notifyDataSetChanged();
+                    cancelContextMode();
+                }
+                break;
+            case android.R.id.home:
+                if (contextMoodOn) {
+                    cancelContextMode();
+                }
+                else {
+                    finish();
+                }
+                break;
+        }
+
+        return true;
+    }
+
+    /*
+        refresh the list each tym the activity or list is shown with the data got from the web database
+     */
     private void refreshPatientList() {
 
         if (mPatientList != null) {
@@ -87,24 +133,6 @@ public class ListActivity extends AppCompatActivity implements View.OnLongClickL
                 && getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-        }
-        return true;
-    }
-
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_delete) {
-            //Toast.makeText(ListActivity.this, "clicked", Toast.LENGTH_SHORT).show();
-        }
-        return true;
     }
 
     private void getPatientList(String username) {
@@ -200,19 +228,77 @@ public class ListActivity extends AppCompatActivity implements View.OnLongClickL
         });
     }
 
-    @Override
-    public boolean onLongClick(View v) {
-        int id = v.getId();
-        contextMoodOn = true;
-        adapter.notifyDataSetChanged();
 
+    /*
+        methods related to the context mode
+     */
+    @Override
+    public boolean onLongClick(View view) {
+        startContextMode();
         return true;
     }
 
-    public static void proceedInContextMenu(int id) {
-
-
+    /*
+        works that will be done when the context mode is on,,that means it updates the counter,
+        shows the context action bar and changes the view
+     */
+    public void contextModeWork(View v, int position) {
+        if (((CheckBox) v).isChecked()) {
+            selectedList.add(mPatientList[position]);
+            counter = counter + 1;
+            updateCounter(counter);
+        } else {
+            selectedList.remove(mPatientList[position]);
+            counter = counter - 1;
+            updateCounter(counter);
+        }
     }
+
+    /*
+        updates the counter of the selected items and shows them in the context action bar
+     */
+    public void updateCounter(int counter) {
+        String msg;
+        if (counter == 0) {
+            msg = " item selected";
+        } else {
+            msg = " items selected";
+        }
+
+        mToolbarText.setText(counter + msg);
+    }
+
+    /*
+        start the context mode and show context mode view when user long presses any item
+     */
+    public void startContextMode() {
+        mToolbar.getMenu().clear();
+        mToolbar.inflateMenu(R.menu.context_menu);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        contextMoodOn = true;
+        adapter.notifyDataSetChanged();
+        mToolbarText.setVisibility(View.VISIBLE);
+        mToolbarText.setText("0 item selected");
+    }
+
+    /*
+        cancel the context mode and show default view when user press back button or delete any item
+     */
+    public void cancelContextMode() {
+        mToolbar.getMenu().clear();
+        mToolbar.inflateMenu(R.menu.main_menu);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        contextMoodOn = false;
+        adapter.notifyDataSetChanged();
+        mToolbarText.setVisibility(View.GONE);
+        selectedList.clear();
+        counter = 0;
+    }
+
+
+    /*
+        methods and classes related to the style of the recyclerview
+     */
 
     public class DividerItemDecoration extends RecyclerView.ItemDecoration {
 

@@ -16,7 +16,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by Shaafi on 10-Jul-16.
+ * Created by Asif Imiaz Shaafi, on 10-Jul-16.
+ * Email: a15shaafi.209@gmail.com
  */
 public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.ViewHolder> {
 
@@ -44,6 +45,13 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
     public void onBindViewHolder(ViewHolder holder, int position) {
 
         holder.bindViews(mPatientList[position]);
+
+        if (ListActivity.contextMoodOn) {
+            holder.mPatientCheckBox.setVisibility(View.VISIBLE);
+            holder.mPatientCheckBox.setChecked(false);
+        } else {
+            holder.mPatientCheckBox.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -78,6 +86,7 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
 
             itemView.setOnClickListener(this);
             mPatientCardView.setOnLongClickListener(activity);
+            mPatientCheckBox.setOnClickListener(this);
         }
 
         protected void bindViews(PatientDetailsForDoctorList patient){
@@ -88,8 +97,8 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
 
         @Override
         public void onClick(View v) {
-            if (ListActivity.contextMoodOn) {
-                ListActivity.proceedInContextMenu(v.getId());
+            if (ListActivity.contextMoodOn && v.getId() == R.id.patientLsitCheckBox) {
+                mListActivity.contextModeWork(v, getAdapterPosition());
             }
         }
     }
