@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:layout_gravity="center"
-              android:background="@drawable/main_bg"
-              android:orientation="vertical"
-              android:padding="8dp">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_gravity="center"
+    android:background="@drawable/main_bg"
+    android:orientation="vertical"
+    android:padding="8dp"
+    tools:context=".mainUi.MainActivity">
 
     <TextView
         android:id="@+id/welcomeTextView"
@@ -13,22 +15,22 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_gravity="center"
-        android:layout_weight="4"
-        android:gravity="center_horizontal"
+        android:layout_weight="3.5"
+        android:gravity="center"
         android:text="Welcome user!"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#f7991f"
-        android:textSize="50sp"/>
+        android:textSize="75sp" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_gravity="center"
-        android:layout_weight="3"
+        android:layout_weight="2"
         android:text="Continue As..."
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textSize="30sp"
+        android:textSize="55sp"
         android:textStyle="bold|italic"/>
 
     <Button
@@ -43,7 +45,7 @@
         android:padding="10dp"
         android:text="Doctor"
         android:textColor="#0407be"
-        android:textSize="20sp"
+        android:textSize="35sp"
         android:textStyle="bold"/>
 
     <Button
@@ -58,7 +60,7 @@
         android:padding="10dp"
         android:text="Patient"
         android:textColor="#0407be"
-        android:textSize="20sp"
+        android:textSize="35sp"
         android:textStyle="bold"/>
 
 </LinearLayout>

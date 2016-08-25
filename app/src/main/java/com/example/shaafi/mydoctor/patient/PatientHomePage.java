@@ -73,7 +73,6 @@ public class PatientHomePage extends AppCompatActivity {
             dummyPatient.setUserName(patientObject.getString("username"));
             dummyPatient.setAge(patientObject.getString("age"));
             dummyPatient.setBirthDay(patientObject.getString("birthday"));
-            dummyPatient.setPatientImage(patientObject.getString("image"));
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -104,7 +103,6 @@ public class PatientHomePage extends AppCompatActivity {
         intent.putExtra("patient_username", mPatientDetails.getUserName());
         intent.putExtra("patient_name", mPatientDetails.getFullName());
         intent.putExtra("age", mPatientDetails.getAge());
-        intent.putExtra("image", mPatientDetails.getPatientImage());
         startActivity(intent);
     }
 

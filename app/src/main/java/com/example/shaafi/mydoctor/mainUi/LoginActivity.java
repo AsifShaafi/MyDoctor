@@ -87,6 +87,15 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+/*
+            setting custom transition or animation between the activity changing
+         */
+        overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+    }
+
     //setting up the back/home button in the action bar to go to previous page
     private void setupActionBar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -186,7 +195,7 @@ public class LoginActivity extends AppCompatActivity {
                         .show();
             }
         } else {
-            DialogClass.warringAlert(LoginActivity.this,"Please fill all fields first");
+            DialogClass.warringAlert(LoginActivity.this, "Please fill all fields first");
             focusView.requestFocus();
         }
     }
@@ -316,8 +325,13 @@ public class LoginActivity extends AppCompatActivity {
                                 Intent intent = new Intent(LoginActivity.this, DoctorHomePage.class);
                                 intent.putExtra(DOCTOR_JSON_DATA, jsonData);
                                 startActivity(intent);
+
+                                /*
+                                    setting custom transition or animation between the activity changing
+                                */
+                                overridePendingTransition(android.R.anim.bounce_interpolator, android.R.anim.anticipate_overshoot_interpolator);
                             } else {
-                                DialogClass.warringAlert(LoginActivity.this,getString(R.string.username_dont_match));
+                                DialogClass.warringAlert(LoginActivity.this, getString(R.string.username_dont_match));
                             }
 
                         } else if (jsonData.contains("patient")) {

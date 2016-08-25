@@ -1,17 +1,11 @@
 package com.example.shaafi.mydoctor.mainUi;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import com.example.shaafi.mydoctor.R;
-
-import butterknife.BindView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,5 +37,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         startActivity(intent);
+
+        /*
+            setting custom transition or animation between the activity changing
+         */
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
     }
 }

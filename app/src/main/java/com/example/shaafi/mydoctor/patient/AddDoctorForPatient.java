@@ -52,7 +52,6 @@ public class AddDoctorForPatient extends AppCompatActivity {
         patient_name = getIntent().getStringExtra("patient_name");
         patient_username = getIntent().getStringExtra("patient_username");
         age = getIntent().getStringExtra("age");
-        imageName = getIntent().getStringExtra("image");
     }
 
     /* exits the dialog activity when the user pressed skip button */
@@ -88,7 +87,6 @@ public class AddDoctorForPatient extends AppCompatActivity {
                 .add("patient_username", patient_username)
                 .add("patient_name", patient_name)
                 .add("age",age)
-                .add("image", imageName)
                 .build();
 
         Request request = new Request.Builder()

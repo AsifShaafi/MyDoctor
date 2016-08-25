@@ -22,21 +22,22 @@
         android:textColor="#de0a2d"
         android:textSize="24sp" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/patientListRecyclerView"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_margin="4dp"
-        android:fadeScrollbars="true"
-        android:padding="4dp" />
+        android:layout_height="wrap_content">
 
-    <ProgressBar
-        android:id="@+id/patientListProgressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:visibility="invisible" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/patientListRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_margin="4dp"
+            android:fadeScrollbars="true"
+            android:padding="4dp" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 
     <TextView
         android:id="@+id/emptyList"
@@ -45,6 +46,6 @@
         android:layout_gravity="center"
         android:textColor="#ffffffff"
         android:textSize="24sp"
-        android:visibility="invisible"
+        android:visibility="gone"
         tools:text="New Text" />
 </LinearLayout>

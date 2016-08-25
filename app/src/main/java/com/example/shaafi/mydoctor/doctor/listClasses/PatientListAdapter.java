@@ -114,7 +114,6 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
             } else {
                 ImageHandler.PatientNView mPatientNView =
                         new ImageHandler.PatientNView(patient, mPatientListImageProgressBar, mPatientImage);
-
                 ImageHandler.ImageLoader loader = new ImageHandler.ImageLoader(mPatientNView);
                 loader.execute(mPatientNView);
             }

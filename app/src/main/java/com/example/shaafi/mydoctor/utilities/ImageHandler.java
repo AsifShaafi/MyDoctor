@@ -51,11 +51,11 @@ public class ImageHandler {
      */
     public static class ImageLoader extends AsyncTask<PatientNView, Void, PatientNView> {
 
-        PatientNView container;
+        //PatientNView container;
         ProgressBar progressBar;
 
         public ImageLoader(PatientNView container) {
-            this.container = container;
+            // this.container = container;
             progressBar = container.mProgressBar;
         }
 
@@ -74,7 +74,7 @@ public class ImageHandler {
 
             try {
 
-                String imageUrl = PHOTO_BASE_URI + mPatientDetailsForDoctorList.getPatientImage();
+                String imageUrl = PHOTO_BASE_URI + mPatientDetailsForDoctorList.getUserID() + ".png";
 
                 InputStream inputStream = (InputStream) new URL(imageUrl).getContent();
 

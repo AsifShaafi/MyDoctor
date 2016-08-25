@@ -11,7 +11,6 @@ public class PatientDetails {
     private String age;
     private String bloodGroup;
     private String birthDay;
-    private String patientImage;
 
     public String getFullName() {
         return fullName;
@@ -51,14 +50,6 @@ public class PatientDetails {
 
     public void setBirthDay(String birthDay) {
         this.birthDay = birthDay;
-    }
-
-    public String getPatientImage() {
-        return patientImage;
-    }
-
-    public void setPatientImage(String patientImage) {
-        this.patientImage = patientImage;
     }
 
 }

@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,7 +15,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,7 +42,8 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class ListActivity extends AppCompatActivity implements View.OnLongClickListener {
+public class ListActivity extends AppCompatActivity
+        implements View.OnLongClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     PatientDetailsForDoctorList[] mPatientList;
 
@@ -55,20 +56,22 @@ public class ListActivity extends AppCompatActivity implements View.OnLongClickL
     RecyclerView mRecyclerView;
     @BindView(R.id.emptyList)
     TextView mEmptyListMsg;
-    @BindView(R.id.patientListProgressBar)
-    ProgressBar mDoctorProgressBar;
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
     @BindView(R.id.toolbarText)
     TextView mToolbarText;
+    @BindView(R.id.swipe_refresh)
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list);
+        setContentView(R.layout.activity_list_for_doctor_of_patients);
         addSupportActionBar();
         ButterKnife.bind(this);
-        getPatientList(getIntent().getStringExtra(DoctorHomePage.DOCTOR_NAME));
+
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+
     }
 
     @Override
@@ -78,6 +81,13 @@ public class ListActivity extends AppCompatActivity implements View.OnLongClickL
         setSupportActionBar(mToolbar);
         addSupportActionBar();
         mToolbarText.setVisibility(View.GONE);
+
+        mSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                getPatientList(getIntent().getStringExtra(DoctorHomePage.DOCTOR_NAME));
+            }
+        });
     }
 
     @Override
@@ -138,7 +148,9 @@ public class ListActivity extends AppCompatActivity implements View.OnLongClickL
 
     private void getPatientList(String username) {
 
-        mDoctorProgressBar.setVisibility(View.VISIBLE);
+        mSwipeRefreshLayout.setRefreshing(true);
+
+        //mDoctorProgressBar.setVisibility(View.VISIBLE);
         mRecyclerView.setVisibility(View.GONE);
 
         //String url = "http://192.168.13.2/my_doctor/getPatientList.php";
@@ -164,8 +176,9 @@ public class ListActivity extends AppCompatActivity implements View.OnLongClickL
                     @Override
                     public void run() {
                         Toast.makeText(ListActivity.this, "Operation failed", Toast.LENGTH_SHORT).show();
-                        mDoctorProgressBar.setVisibility(View.GONE);
                         mRecyclerView.setVisibility(View.VISIBLE);
+
+                        mSwipeRefreshLayout.setRefreshing(false);
                     }
                 });
             }
@@ -185,8 +198,9 @@ public class ListActivity extends AppCompatActivity implements View.OnLongClickL
                         @Override
                         public void run() {
                             Toast.makeText(ListActivity.this, "unsuccessful", Toast.LENGTH_SHORT).show();
-                            mDoctorProgressBar.setVisibility(View.GONE);
                             mRecyclerView.setVisibility(View.VISIBLE);
+
+                            mSwipeRefreshLayout.setRefreshing(false);
                         }
                     });
                 }
@@ -210,8 +224,6 @@ public class ListActivity extends AppCompatActivity implements View.OnLongClickL
             p.setName(jsonObject.getString("patient_name"));
             p.setUserID(jsonObject.getString("patient_username"));
             p.setAge(jsonObject.getString("age"));
-            p.setPatientImage(jsonObject.getString("image"));
-            //Log.i("listP", jsonObject.getString("patient_name"));
 
             mList[i] = p;
         }
@@ -222,9 +234,9 @@ public class ListActivity extends AppCompatActivity implements View.OnLongClickL
             @Override
             public void run() {
 
-                mDoctorProgressBar.setVisibility(View.GONE);
                 mRecyclerView.setVisibility(View.VISIBLE);
 
+                mSwipeRefreshLayout.setRefreshing(false);
                 refreshPatientList();
             }
         });
@@ -295,6 +307,15 @@ public class ListActivity extends AppCompatActivity implements View.OnLongClickL
         mToolbarText.setVisibility(View.GONE);
         selectedList.clear();
         counter = 0;
+    }
+
+    /*
+        this method is called when user swaps down the refresh button
+     */
+    @Override
+    public void onRefresh() {
+
+        getPatientList(getIntent().getStringExtra(DoctorHomePage.DOCTOR_NAME));
     }
 
 
