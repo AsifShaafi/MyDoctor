@@ -261,7 +261,7 @@ public class ListActivity extends AppCompatActivity implements View.OnLongClickL
      */
     public void updateCounter(int counter) {
         String msg;
-        if (counter == 0) {
+        if (counter <= 1) {
             msg = " item selected";
         } else {
             msg = " items selected";

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,9 +34,6 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
         mPatientList = patientList;
         mListActivity = activity;
 
-        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
-
-        ImageHandler.imageCache = new LruCache<>(maxMemory / 8);
     }
 
     @Override
