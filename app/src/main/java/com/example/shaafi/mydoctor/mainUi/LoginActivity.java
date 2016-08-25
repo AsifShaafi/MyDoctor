@@ -10,6 +10,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.LruCache;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -21,6 +22,7 @@ import com.example.shaafi.mydoctor.doctor.DoctorRegistration;
 import com.example.shaafi.mydoctor.patient.PatientHomePage;
 import com.example.shaafi.mydoctor.patient.PatientRegistration;
 import com.example.shaafi.mydoctor.utilities.DialogClass;
+import com.example.shaafi.mydoctor.utilities.ImageHandler;
 import com.example.shaafi.mydoctor.utilities.NetworkConnection;
 
 import org.json.JSONException;
@@ -61,6 +63,14 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         setupActionBar();
+
+        /*
+            creating the image cache memory to save images
+         */
+        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+
+        ImageHandler.imageCache = new LruCache<>(maxMemory / 8);
+
     }
 
     @Override
