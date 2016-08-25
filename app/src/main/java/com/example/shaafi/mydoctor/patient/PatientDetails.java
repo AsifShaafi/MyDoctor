@@ -1,7 +1,8 @@
 package com.example.shaafi.mydoctor.patient;
 
 /**
- * Created by Shaafi on 17-Jul-16.
+ * Created by Asif Imiaz Shaafi, on 17-Jul-16.
+ * Email: a15shaafi.209@gmail.com
  */
 public class PatientDetails {
 
@@ -10,6 +11,7 @@ public class PatientDetails {
     private String age;
     private String bloodGroup;
     private String birthDay;
+    private String patientImage;
 
     public String getFullName() {
         return fullName;
@@ -50,4 +52,13 @@ public class PatientDetails {
     public void setBirthDay(String birthDay) {
         this.birthDay = birthDay;
     }
+
+    public String getPatientImage() {
+        return patientImage;
+    }
+
+    public void setPatientImage(String patientImage) {
+        this.patientImage = patientImage;
+    }
+
 }

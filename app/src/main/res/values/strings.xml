@@ -30,6 +30,8 @@
     <string name="enter_sector">Please enter your sector</string>
     <string name="under_construction">Under construction</string>
     <string name="username_dont_match">username/password doesn\'t match</string>
+    <string name="no_patient_found">No patient found</string>
+    <string name="zero_item_selected">0 item selected</string>
 
     <string-array name="doctor_sectors">
         <item>Dentist</item>

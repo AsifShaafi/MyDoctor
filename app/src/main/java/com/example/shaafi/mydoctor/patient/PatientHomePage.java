@@ -48,6 +48,9 @@ public class PatientHomePage extends AppCompatActivity {
 
     }
 
+    /*
+        setting the patient home page with patient data
+     */
     private void setViewInLayout(PatientDetails mPatientDetails) {
         mPatientName.setText(mPatientDetails.getFullName());
         mPatientUsername.setText(mPatientDetails.getUserName());
@@ -70,6 +73,7 @@ public class PatientHomePage extends AppCompatActivity {
             dummyPatient.setUserName(patientObject.getString("username"));
             dummyPatient.setAge(patientObject.getString("age"));
             dummyPatient.setBirthDay(patientObject.getString("birthday"));
+            dummyPatient.setPatientImage(patientObject.getString("image"));
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -91,11 +95,16 @@ public class PatientHomePage extends AppCompatActivity {
         }
     }
 
+    /*
+        start the process to add a doctor to the patient's doctor list
+        it starts a activity which has a alert dialog layout
+     */
     public void proceedToAddDoctor(View view) {
         Intent intent = new Intent(this, AddDoctorForPatient.class);
         intent.putExtra("patient_username", mPatientDetails.getUserName());
         intent.putExtra("patient_name", mPatientDetails.getFullName());
         intent.putExtra("age", mPatientDetails.getAge());
+        intent.putExtra("image", mPatientDetails.getPatientImage());
         startActivity(intent);
     }
 

@@ -9,6 +9,17 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.shaafi.mydoctor.patient.PatientHomePage">
 
+    <ImageView
+        android:id="@+id/patientHomeImage"
+        android:layout_width="124dp"
+        android:layout_height="240dp"
+        android:layout_alignBottom="@+id/textView3"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="patient's image"
+        android:padding="4dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/default_image" />
+
     <TextView
         android:id="@+id/nameTileText"
         android:layout_width="wrap_content"
@@ -50,7 +61,7 @@
         android:layout_below="@+id/nameTileText"
         android:layout_marginTop="8dp"
         android:text="New Text"
-        android:textSize="18dp" />
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/patientUsernameTextView"
@@ -61,7 +72,7 @@
         android:layout_below="@+id/textView3"
         android:layout_marginTop="8dp"
         android:text="New Text"
-        android:textSize="18dp" />
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/patientAgeTextView"
@@ -85,30 +96,33 @@
 
         <Button
             android:id="@+id/addDoctorButton"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Add Doctor"
             android:onClick="proceedToAddDoctor"
+            android:text="Add Doctor"
             android:textAllCaps="false" />
 
         <Button
             android:id="@+id/viewDataListButton"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:onClick="showPatientData"
             android:text="View Data List"
-            android:textAllCaps="false"
-            android:onClick="showPatientData"/>
+            android:textAllCaps="false" />
 
         <Button
             android:id="@+id/addDataButton"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:onClick="proceedToAddData"
             android:text="Add Data"
-            android:textAllCaps="false"
-            android:onClick="proceedToAddData"/>
+            android:textAllCaps="false" />
 
     </LinearLayout>
 

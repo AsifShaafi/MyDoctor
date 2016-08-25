@@ -30,6 +30,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -67,7 +68,7 @@ public class ListActivity extends AppCompatActivity implements View.OnLongClickL
         setContentView(R.layout.activity_list);
         addSupportActionBar();
         ButterKnife.bind(this);
-        getPatientList(getIntent().getStringExtra(DoctorHomePage.PATIENT_LIST));
+        getPatientList(getIntent().getStringExtra(DoctorHomePage.DOCTOR_NAME));
     }
 
     @Override
@@ -124,7 +125,7 @@ public class ListActivity extends AppCompatActivity implements View.OnLongClickL
             mRecyclerView.addItemDecoration(new DividerItemDecoration(dividerDrawable));
         } else {
             mEmptyListMsg.setVisibility(View.VISIBLE);
-            mEmptyListMsg.setText("No patient found");
+            mEmptyListMsg.setText(R.string.no_patient_found);
         }
     }
 
@@ -138,7 +139,7 @@ public class ListActivity extends AppCompatActivity implements View.OnLongClickL
     private void getPatientList(String username) {
 
         mDoctorProgressBar.setVisibility(View.VISIBLE);
-        mRecyclerView.setVisibility(View.INVISIBLE);
+        mRecyclerView.setVisibility(View.GONE);
 
         //String url = "http://192.168.13.2/my_doctor/getPatientList.php";
         String url = NetworkConnection.mainUrl + "getPatientList.php";
@@ -209,6 +210,7 @@ public class ListActivity extends AppCompatActivity implements View.OnLongClickL
             p.setName(jsonObject.getString("patient_name"));
             p.setUserID(jsonObject.getString("patient_username"));
             p.setAge(jsonObject.getString("age"));
+            p.setPatientImage(jsonObject.getString("image"));
             //Log.i("listP", jsonObject.getString("patient_name"));
 
             mList[i] = p;
@@ -265,7 +267,7 @@ public class ListActivity extends AppCompatActivity implements View.OnLongClickL
             msg = " items selected";
         }
 
-        mToolbarText.setText(counter + msg);
+        mToolbarText.setText(String.format(Locale.getDefault(), "%d %s", counter, msg));
     }
 
     /*
@@ -274,11 +276,11 @@ public class ListActivity extends AppCompatActivity implements View.OnLongClickL
     public void startContextMode() {
         mToolbar.getMenu().clear();
         mToolbar.inflateMenu(R.menu.context_menu);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayShowTitleEnabled(false);
         contextMoodOn = true;
         adapter.notifyDataSetChanged();
         mToolbarText.setVisibility(View.VISIBLE);
-        mToolbarText.setText("0 item selected");
+        mToolbarText.setText(R.string.zero_item_selected);
     }
 
     /*
@@ -287,7 +289,7 @@ public class ListActivity extends AppCompatActivity implements View.OnLongClickL
     public void cancelContextMode() {
         mToolbar.getMenu().clear();
         mToolbar.inflateMenu(R.menu.main_menu);
-        getSupportActionBar().setDisplayShowTitleEnabled(true);
+        if (getSupportActionBar() != null) getSupportActionBar().setDisplayShowTitleEnabled(true);
         contextMoodOn = false;
         adapter.notifyDataSetChanged();
         mToolbarText.setVisibility(View.GONE);

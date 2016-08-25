@@ -1,9 +1,6 @@
 package com.example.shaafi.mydoctor.patient;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -26,6 +23,9 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
+import static com.example.shaafi.mydoctor.utilities.DialogClass.successAlert;
+import static com.example.shaafi.mydoctor.utilities.DialogClass.warringAlert;
+
 public class AddDoctorForPatient extends AppCompatActivity {
 
     /*
@@ -40,7 +40,7 @@ public class AddDoctorForPatient extends AppCompatActivity {
     EditText mDoctorUserEditText;
 
     //string variables about the patient that will come from intent and be used to store data
-    String patient_username, patient_name, age;
+    String patient_username, patient_name, age, imageName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +52,7 @@ public class AddDoctorForPatient extends AppCompatActivity {
         patient_name = getIntent().getStringExtra("patient_name");
         patient_username = getIntent().getStringExtra("patient_username");
         age = getIntent().getStringExtra("age");
+        imageName = getIntent().getStringExtra("image");
     }
 
     /* exits the dialog activity when the user pressed skip button */
@@ -64,10 +65,12 @@ public class AddDoctorForPatient extends AppCompatActivity {
     proceed to add it to the patients doctor list as well as the database
      */
     public void addDoctorForPatient(View view) {
-        if (!TextUtils.isEmpty(mDoctorUserEditText.getText()) && NetworkConnection.hasNetworkConnection(getBaseContext())){
+        if (!TextUtils.isEmpty(mDoctorUserEditText.getText()) &&
+                NetworkConnection.hasNetworkConnection(AddDoctorForPatient.this)) {
             addDoctor();
-        }
-        else {
+        } else if (!NetworkConnection.hasNetworkConnection(AddDoctorForPatient.this)) {
+            warringAlert(AddDoctorForPatient.this, "Check your network connection");
+        } else {
             Toast.makeText(AddDoctorForPatient.this, "Please enter a doctor username", Toast.LENGTH_SHORT).show();
         }
     }
@@ -85,6 +88,7 @@ public class AddDoctorForPatient extends AppCompatActivity {
                 .add("patient_username", patient_username)
                 .add("patient_name", patient_name)
                 .add("age",age)
+                .add("image", imageName)
                 .build();
 
         Request request = new Request.Builder()
@@ -99,7 +103,8 @@ public class AddDoctorForPatient extends AppCompatActivity {
             public void onFailure(Call call, IOException e) {
                 runOnUiThread(new Runnable() {
                     @Override
-                    public void run() {warringAlert("Adding Failed");
+                    public void run() {
+                        warringAlert(AddDoctorForPatient.this, "Adding Failed");
                     }
                 });
             }
@@ -114,9 +119,9 @@ public class AddDoctorForPatient extends AppCompatActivity {
                         @Override
                         public void run() {
                             if (result.equals("inserted")) {
-                                successAlert("Doctor Added");
+                                successAlert(AddDoctorForPatient.this, "Doctor Added");
                             } else {
-                                warringAlert("Sorry could not add doctor,Please try again");
+                                warringAlert(AddDoctorForPatient.this, "Sorry could not add doctor,Please try again");
                             }
                         }
                     });
@@ -125,46 +130,46 @@ public class AddDoctorForPatient extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            warringAlert("There was some problem, please try again later");
+                            warringAlert(AddDoctorForPatient.this, "There was some problem, please try again later");
                         }
                     });
                 }
             }
         });
     }
-
-    /*
-    a warring alert for user about the error.
- */
-    public void warringAlert(String alert) {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setCancelable(true)
-                .setTitle("Ups!!")
-                .setMessage(alert)
-                .setPositiveButton("OK", null);
-
-        Dialog dialog = builder.create();
-        dialog.show();
-    }
-
-    /*
-a warring alert for user about the error.
-*/
-    public void successAlert(String alert) {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this)
-                .setCancelable(true)
-                .setTitle("Success!!")
-                .setMessage(alert)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                });
-
-        Dialog dialog = builder.create();
-        dialog.show();
-    }
+//
+//    /*
+//    a warring alert for user about the error.
+// */
+//    public void warringAlert(String alert) {
+//
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+//                .setCancelable(true)
+//                .setTitle("Ups!!")
+//                .setMessage(alert)
+//                .setPositiveButton("OK", null);
+//
+//        Dialog dialog = builder.create();
+//        dialog.show();
+//    }
+//
+//    /*
+//a warring alert for user about the error.
+//*/
+//    public void successAlert(String alert) {
+//
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this)
+//                .setCancelable(true)
+//                .setTitle("Success!!")
+//                .setMessage(alert)
+//                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        finish();
+//                    }
+//                });
+//
+//        Dialog dialog = builder.create();
+//        dialog.show();
+//    }
 }

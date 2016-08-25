@@ -18,6 +18,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.shaafi.mydoctor.R;
+import com.example.shaafi.mydoctor.utilities.ImageHandler;
 import com.example.shaafi.mydoctor.utilities.NetworkConnection;
 
 import java.io.ByteArrayOutputStream;
@@ -38,7 +39,6 @@ import static com.example.shaafi.mydoctor.utilities.DialogClass.warringAlert;
 
 public class PatientRegistration extends AppCompatActivity {
 
-    public static final int REQUEST_CODE = 100;
     private Bitmap bitmap;
     private String image_encoded_string;
 
@@ -89,7 +89,7 @@ public class PatientRegistration extends AppCompatActivity {
      */
     public void pickImageForUpload(View view) {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(galleryIntent, REQUEST_CODE);
+        startActivityForResult(galleryIntent, ImageHandler.REQUEST_CODE);
     }
 
     /*
@@ -98,7 +98,7 @@ public class PatientRegistration extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+        if (requestCode == ImageHandler.REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             Uri image = data.getData();
             mUplodedImage.setImageURI(image);
             bitmap = ((BitmapDrawable) mUplodedImage.getDrawable()).getBitmap();

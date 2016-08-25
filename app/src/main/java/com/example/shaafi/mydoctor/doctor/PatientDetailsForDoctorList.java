@@ -1,7 +1,8 @@
 package com.example.shaafi.mydoctor.doctor;
 
 /**
- * Created by Shaafi on 10-Jul-16.
+ * Created by Asif Imiaz Shaafi, on 10-Jul-16.
+ * Email: a15shaafi.209@gmail.com
  */
 public class PatientDetailsForDoctorList {
 
@@ -13,6 +14,8 @@ public class PatientDetailsForDoctorList {
     private String name;
     private String userID;
     private String age;
+    private String patientImage;
+
 
     public PatientDetailsForDoctorList() {
     }
@@ -39,5 +42,13 @@ public class PatientDetailsForDoctorList {
 
     public void setAge(String age) {
         this.age = age;
+    }
+
+    public String getPatientImage() {
+        return patientImage;
+    }
+
+    public void setPatientImage(String patientImage) {
+        this.patientImage = patientImage;
     }
 }

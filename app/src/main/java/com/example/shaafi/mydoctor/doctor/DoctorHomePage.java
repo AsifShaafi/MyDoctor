@@ -20,7 +20,7 @@ import butterknife.OnClick;
 
 public class DoctorHomePage extends AppCompatActivity {
 
-    public static final String PATIENT_LIST = "patientList";
+    public static final String DOCTOR_NAME = "patientList";
     DoctorDetails mDoctor;
 
     @BindView(R.id.doctorNAmeTextView)
@@ -69,7 +69,7 @@ public class DoctorHomePage extends AppCompatActivity {
 
     //setting up the back/home button in the action bar to go to previous page
     private void setupActionBar() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB && getSupportActionBar() != null) {
             // Show the Up button in the action bar.
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -81,7 +81,7 @@ public class DoctorHomePage extends AppCompatActivity {
         Intent intent = new Intent(this, ListActivity.class);
 
         //sends the doctors username as intent so that the patient list can be retrived
-        intent.putExtra(PATIENT_LIST, mDoctor.getUsername());
+        intent.putExtra(DOCTOR_NAME, mDoctor.getUsername());
         startActivity(intent);
     }
 }

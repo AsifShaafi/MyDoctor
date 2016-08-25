@@ -72,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Set up the login form.
         if (CURRENT_USER.equals(MainActivity.PATIENT)) {
-            mTextInputLayout.setVisibility(View.INVISIBLE);
+            mTextInputLayout.setVisibility(View.GONE);
             passwordTyped = true;
         }
     }
