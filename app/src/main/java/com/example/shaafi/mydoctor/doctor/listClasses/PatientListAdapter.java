@@ -1,6 +1,6 @@
 package com.example.shaafi.mydoctor.doctor.listClasses;
 
-import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -8,32 +8,39 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.shaafi.mydoctor.R;
 import com.example.shaafi.mydoctor.doctor.PatientDetailsForDoctorList;
+import com.example.shaafi.mydoctor.patient.PatientHomeForDoctor;
 import com.example.shaafi.mydoctor.utilities.ImageHandler;
+
+import java.util.Arrays;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by Asif Imiaz Shaafi, on 10-Jul-16.
+ * Created by Asif Imtiaz Shaafi, on 10-Jul-16.
  * Email: a15shaafi.209@gmail.com
  */
-public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.ViewHolder> {
+class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.ViewHolder> implements Filterable {
 
-    PatientDetailsForDoctorList[] mPatientList;
-    Context mContext;
-    ListActivity mListActivity;
+    private PatientDetailsForDoctorList[] mPatientList;
+    List<PatientDetailsForDoctorList> mPatientArrayList;
+    private ListActivity mListActivity;
+    private CustomSearchForRecyclerView customSearchForRecyclerView;
 
-    public PatientListAdapter(Context context,ListActivity activity, PatientDetailsForDoctorList[] patientList) {
-        mContext = context;
+    PatientListAdapter(ListActivity activity, PatientDetailsForDoctorList[] patientList) {
         mPatientList = patientList;
         mListActivity = activity;
-
+        mPatientArrayList = Arrays.asList(mPatientList);
     }
 
     @Override
@@ -47,7 +54,7 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        holder.bindViews(mPatientList[position]);
+        holder.bindViews(mPatientArrayList.get(position));
 
         if (ListActivity.contextMoodOn) {
             holder.mPatientCheckBox.setVisibility(View.VISIBLE);
@@ -59,13 +66,24 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
 
     @Override
     public int getItemCount() {
-        return mPatientList.length;
+        return mPatientArrayList.size();
     }
 
-    protected class ViewHolder extends RecyclerView.ViewHolder implements
+    @Override
+    public Filter getFilter() {
+
+        if (customSearchForRecyclerView == null) {
+            customSearchForRecyclerView = new CustomSearchForRecyclerView(mPatientArrayList, this);
+        }
+
+        return customSearchForRecyclerView;
+    }
+
+
+    class ViewHolder extends RecyclerView.ViewHolder implements
             View.OnClickListener {
 
-        @BindView(R.id.lsitPatientNameTextView)
+        @BindView(R.id.listPatientNameTextView)
         TextView mPatientName;
         @BindView(R.id.listPatientUserIdTextView)
         TextView mPatientUserId;
@@ -80,23 +98,23 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
         @BindView(R.id.patientListCardView)
         CardView mPatientCardView;
 
-        public ViewHolder(ListActivity activity, View itemView) {
+        ViewHolder(ListActivity activity, View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
             if (ListActivity.contextMoodOn) {
                 mPatientCheckBox.setVisibility(View.VISIBLE);
-            }
-            else {
+            } else {
                 mPatientCheckBox.setVisibility(View.GONE);
             }
 
             itemView.setOnClickListener(this);
             mPatientCardView.setOnLongClickListener(activity);
+            mPatientCardView.setOnClickListener(this);
             mPatientCheckBox.setOnClickListener(this);
         }
 
-        protected void bindViews(PatientDetailsForDoctorList patient){
+        void bindViews(PatientDetailsForDoctorList patient) {
             mPatientName.setText(patient.getName());
             mPatientUserId.setText(patient.getUserID());
             mPatientAge.setText(patient.getAge());
@@ -113,7 +131,7 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
                 mPatientImage.setImageBitmap(bitmap);
             } else {
                 ImageHandler.PatientNView mPatientNView =
-                        new ImageHandler.PatientNView(patient, mPatientListImageProgressBar, mPatientImage);
+                        new ImageHandler.PatientNView(patient.getUserID(), mPatientListImageProgressBar, mPatientImage);
                 ImageHandler.ImageLoader loader = new ImageHandler.ImageLoader(mPatientNView);
                 loader.execute(mPatientNView);
             }
@@ -121,8 +139,14 @@ public class PatientListAdapter extends RecyclerView.Adapter<PatientListAdapter.
 
         @Override
         public void onClick(View v) {
+            Toast.makeText(mListActivity, "clicked", Toast.LENGTH_SHORT).show();
             if (ListActivity.contextMoodOn && v.getId() == R.id.patientListCheckBox) {
                 mListActivity.contextModeWork(v, getAdapterPosition());
+            } else if (v.getId() == R.id.patientListCardView) {
+                Toast.makeText(mListActivity, "clicked2", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mListActivity, PatientHomeForDoctor.class);
+                intent.putExtra("patient_clicked", mPatientList[getAdapterPosition()].getUserID());
+                mListActivity.startActivity(intent);
             }
         }
     }

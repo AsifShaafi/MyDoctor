@@ -39,9 +39,13 @@
                 android:value=".mainUi.LoginActivity" />
         </activity>
         <activity
-            android:theme="@style/ToolbarTheme"
             android:name=".doctor.listClasses.ListActivity"
-            android:parentActivityName=".doctor.DoctorHomePage" />
+            android:parentActivityName=".doctor.DoctorHomePage"
+            android:theme="@style/ToolbarTheme">
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
         <activity
             android:name=".patient.PatientHomePage"
             android:label="Patient Details"
@@ -54,6 +58,7 @@
             android:name=".patient.AddDoctorForPatient"
             android:theme="@style/Theme.AppCompat.Dialog.Alert" />
         <activity android:name=".patient.PatientRegistration" />
+        <activity android:name=".patient.PatientHomeForDoctor"></activity>
     </application>
 
 </manifest>

@@ -10,8 +10,10 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
@@ -45,12 +47,14 @@ import okhttp3.Response;
 public class ListActivity extends AppCompatActivity
         implements View.OnLongClickListener, SwipeRefreshLayout.OnRefreshListener {
 
-    PatientDetailsForDoctorList[] mPatientList;
+    public static PatientDetailsForDoctorList[] mPatientList;
 
     public static boolean contextMoodOn = false;
-    PatientListAdapter adapter;
-    List<PatientDetailsForDoctorList> selectedList = new ArrayList<>();
+    private PatientListAdapter adapter;
+    private List<PatientDetailsForDoctorList> selectedList = new ArrayList<>();
     int counter = 0;
+
+    MenuItem searchItem;
 
     @BindView(R.id.patientListRecyclerView)
     RecyclerView mRecyclerView;
@@ -62,16 +66,39 @@ public class ListActivity extends AppCompatActivity
     TextView mToolbarText;
     @BindView(R.id.swipe_refresh)
     SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.inputSearch)
+    SearchView mPatientSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_for_doctor_of_patients);
-        addSupportActionBar();
         ButterKnife.bind(this);
 
         mSwipeRefreshLayout.setOnRefreshListener(this);
+        mPatientSearch.setVisibility(View.VISIBLE);
 
+        mSwipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                getPatientList(getIntent().getStringExtra(DoctorHomePage.DOCTOR_NAME));
+            }
+        });
+
+        mPatientSearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                adapter.getFilter().filter(newText);
+
+                return true;
+            }
+        });
     }
 
     @Override
@@ -82,12 +109,13 @@ public class ListActivity extends AppCompatActivity
         addSupportActionBar();
         mToolbarText.setVisibility(View.GONE);
 
-        mSwipeRefreshLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                getPatientList(getIntent().getStringExtra(DoctorHomePage.DOCTOR_NAME));
-            }
-        });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+
+        return true;
     }
 
     @Override
@@ -120,7 +148,7 @@ public class ListActivity extends AppCompatActivity
     private void refreshPatientList() {
 
         if (mPatientList != null) {
-            adapter = new PatientListAdapter(this, this, mPatientList);
+            adapter = new PatientListAdapter(this, mPatientList);
             mRecyclerView.setAdapter(adapter);
 
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
@@ -146,6 +174,9 @@ public class ListActivity extends AppCompatActivity
         }
     }
 
+    /*
+        get the patient list from the server database using the doctor username
+     */
     private void getPatientList(String username) {
 
         mSwipeRefreshLayout.setRefreshing(true);
@@ -208,6 +239,9 @@ public class ListActivity extends AppCompatActivity
         });
     }
 
+    /*
+        create the list items from the json data
+     */
     private void setPatientListForDoctor(String jsonData) throws JSONException {
         //Toast.makeText(DoctorHomePage.this, jsonData, Toast.LENGTH_LONG).show();
         //Log.i("Djson", jsonData);

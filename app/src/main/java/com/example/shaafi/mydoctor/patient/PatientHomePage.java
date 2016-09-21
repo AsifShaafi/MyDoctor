@@ -3,16 +3,21 @@ package com.example.shaafi.mydoctor.patient;
 import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.shaafi.mydoctor.R;
 import com.example.shaafi.mydoctor.mainUi.LoginActivity;
 import com.example.shaafi.mydoctor.utilities.DialogClass;
+import com.example.shaafi.mydoctor.utilities.ImageHandler;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,6 +38,10 @@ public class PatientHomePage extends AppCompatActivity {
     TextView mPatientUsername;
     @BindView(R.id.patientAgeTextView)
     TextView mPatientAge;
+    @BindView(R.id.patientHomeImage)
+    ImageView mPatientHomeImage;
+    @BindView(R.id.patientHomeImageProgressBar)
+    ProgressBar mPatientHomeProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +64,17 @@ public class PatientHomePage extends AppCompatActivity {
         mPatientName.setText(mPatientDetails.getFullName());
         mPatientUsername.setText(mPatientDetails.getUserName());
         mPatientAge.setText(mPatientDetails.getAge());
+
+        Bitmap bitmap = ImageHandler.imageCache.get(mPatientDetails.getUserName());
+
+        if (bitmap != null) {
+            mPatientHomeImage.setImageBitmap(bitmap);
+        } else {
+            ImageHandler.PatientNView mPatientNView =
+                    new ImageHandler.PatientNView(mPatientDetails.getUserName(), mPatientHomeProgressBar, mPatientHomeImage);
+            ImageHandler.ImageLoader loader = new ImageHandler.ImageLoader(mPatientNView);
+            loader.execute(mPatientNView);
+        }
     }
 
     /*
@@ -104,6 +124,15 @@ public class PatientHomePage extends AppCompatActivity {
         intent.putExtra("patient_name", mPatientDetails.getFullName());
         intent.putExtra("age", mPatientDetails.getAge());
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+        }
+        return true;
     }
 
     public void proceedToAddData(View view) {

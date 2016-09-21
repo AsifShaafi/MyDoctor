@@ -20,12 +20,14 @@
             android:orientation="vertical">
 
             <ImageView
-                android:layout_width="124dp"
+                android:layout_width="wrap_content"
+                android:layout_margin="4dp"
                 android:layout_marginTop="4dp"
-                android:layout_height="124dp"
+                android:layout_height="wrap_content"
                 android:id="@+id/uploadImageView"
                 android:src="@drawable/register"
                 android:scaleType="centerInside"
+                android:padding="4dp"
                 android:onClick="pickImageForUpload"
                 android:layout_gravity="center_horizontal" />
 

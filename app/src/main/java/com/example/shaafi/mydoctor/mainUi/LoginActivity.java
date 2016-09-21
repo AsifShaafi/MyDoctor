@@ -37,6 +37,8 @@ public class LoginActivity extends AppCompatActivity {
 
     public static final String PATIENT_JSON_DATA = "patientJsonData";
     public static final String DOCTOR_JSON_DATA = "doctorJsonData";
+    public static final String CHECK_USER_AS_DOCTOR_PHP = "checkUserAsDoctor.php";
+    public static final String CHECK_USER_AS_PATIENT_PHP = "checkUserAsPatient.php";
 
     // UI references. binding all the fields with ButterKnife support library
     @BindView(R.id.username_editText)
@@ -232,9 +234,9 @@ public class LoginActivity extends AppCompatActivity {
         //url based on the user type
         if (option.equals(MainActivity.DOCTOR)) {
             //url = "http://192.168.13.2/my_doctor/checkUserAsDoctor.php";
-            path = "checkUserAsDoctor.php";
+            path = CHECK_USER_AS_DOCTOR_PHP;
         } else {
-            path = "checkUserAsPatient.php";
+            path = CHECK_USER_AS_PATIENT_PHP;
         }
 
         /*
@@ -283,8 +285,7 @@ public class LoginActivity extends AppCompatActivity {
 
             NetworkConnection.RequestPackage requestPackage = params[0];
 
-            jsonData = NetworkConnection.getJsonResultFromNetwork(
-                    LoginActivity.this,
+            jsonData = NetworkConnection.getJsonResultFromServer(
                     requestPackage.getUrl(),
                     requestPackage.getRequestBody()
             );

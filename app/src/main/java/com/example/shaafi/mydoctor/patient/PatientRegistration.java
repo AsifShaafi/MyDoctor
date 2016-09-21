@@ -1,16 +1,19 @@
 package com.example.shaafi.mydoctor.patient;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -58,7 +61,30 @@ public class PatientRegistration extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_patient_registration);
         ButterKnife.bind(this);
+        setupActionBar();
         mProgress.setVisibility(View.GONE);
+    }
+
+    /*
+            getting the action bar and setting the home button on it to go to previous activity
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    private void setupActionBar() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            // Show the Up button in the action bar.
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            }
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+        }
+        return true;
     }
 
     /*
@@ -70,16 +96,12 @@ public class PatientRegistration extends AppCompatActivity {
         if (!TextUtils.isEmpty(mPatientAge.getText()) &&
                 !TextUtils.isEmpty(mPatientName.getText()) &&
                 !TextUtils.isEmpty(mPatientUsername.toString()) &&
-                NetworkConnection.hasNetworkConnection(getBaseContext()))
-        {
+                NetworkConnection.hasNetworkConnection(getBaseContext())) {
             mProgress.setVisibility(View.VISIBLE);
             proceedToRegistration();
-        }
-        else if(!NetworkConnection.hasNetworkConnection(getBaseContext()))
-        {
+        } else if (!NetworkConnection.hasNetworkConnection(getBaseContext())) {
             warringAlert(PatientRegistration.this, "please check your internet connection");
-        }
-        else {
+        } else {
             warringAlert(PatientRegistration.this, "please fill all fields");
         }
     }
@@ -159,7 +181,7 @@ public class PatientRegistration extends AppCompatActivity {
                                 mProgress.setVisibility(View.GONE);
                                 successAlert(PatientRegistration.this, "Registration Successful, Please login to continue!");
 
-                            } else if (result.equals("found")){
+                            } else if (result.equals("found")) {
                                 mProgress.setVisibility(View.GONE);
                                 warringAlert(PatientRegistration.this, "Sorry username already taken, use another one");
                             }

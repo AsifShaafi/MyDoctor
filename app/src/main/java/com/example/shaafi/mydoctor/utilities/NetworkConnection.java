@@ -1,10 +1,8 @@
 package com.example.shaafi.mydoctor.utilities;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.v7.app.AlertDialog;
 
 import java.io.IOException;
 
@@ -14,7 +12,8 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 /**
- * Created by Shaafi on 03-Jul-16.
+ * Created by Asif Imtiaz Shaafi, on 03-Jul-16.
+ * Email: a15shaafi.209@gmail.com
  */
 public class NetworkConnection {
 
@@ -34,23 +33,6 @@ public class NetworkConnection {
      */
 //    public static final String mainUrl = "http://192.168.0.102/my_doctor/";
 
-    private static Context mContext;
-
-    /*
-       a warring alert for user about the error.
-    */
-    public static void warringAlert( String alert) {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(mContext)
-                .setCancelable(true)
-                .setTitle("Ups!!")
-                .setMessage(alert)
-                .setPositiveButton("OK", null);
-
-        Dialog dialog = builder.create();
-        dialog.show();
-    }
-
     /*
         Checks if the the user is connected to the internet/network or not.
         If connected returns true
@@ -68,8 +50,7 @@ public class NetworkConnection {
         method that will take the url and the form body,process the request and return the result of
         the request as a string variable
      */
-    public static String getJsonResultFromNetwork(Context context, String path, RequestBody requestBody) {
-        mContext = context;
+    public static String getJsonResultFromServer(String path, RequestBody requestBody) {
         String url = mainUrl + path;
 
         OkHttpClient client = new OkHttpClient();

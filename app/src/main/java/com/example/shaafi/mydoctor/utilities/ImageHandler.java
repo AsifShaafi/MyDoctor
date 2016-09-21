@@ -8,13 +8,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-import com.example.shaafi.mydoctor.doctor.PatientDetailsForDoctorList;
-
 import java.io.InputStream;
 import java.net.URL;
 
 /**
- * Created by Asif Imiaz Shaafi, on 8/25/2016.
+ * Created by Asif Imtiaz Shaafi, on 8/25/2016.
  * Email: a15shaafi.209@gmail.com
  */
 public class ImageHandler {
@@ -31,14 +29,13 @@ public class ImageHandler {
         a static class that is used to get the patient's details to show the image of the patient list
      */
     public static class PatientNView {
-        PatientDetailsForDoctorList mPatientDetailsForDoctorList;
+        String mName;
         ProgressBar mProgressBar;
         ImageView mImageView;
         Bitmap bitmap;
 
-        public PatientNView(PatientDetailsForDoctorList mPatientDetailsForDoctorList, ProgressBar mProgressBar,
-                            ImageView mImageView) {
-            this.mPatientDetailsForDoctorList = mPatientDetailsForDoctorList;
+        public PatientNView(String mName, ProgressBar mProgressBar, ImageView mImageView) {
+            this.mName = mName;
             this.mProgressBar = mProgressBar;
             this.mImageView = mImageView;
         }
@@ -70,11 +67,11 @@ public class ImageHandler {
 
             PatientNView container = params[0];
 
-            PatientDetailsForDoctorList mPatientDetailsForDoctorList = container.mPatientDetailsForDoctorList;
+            String userName = container.mName;
 
             try {
 
-                String imageUrl = PHOTO_BASE_URI + mPatientDetailsForDoctorList.getUserID() + ".png";
+                String imageUrl = PHOTO_BASE_URI + userName + ".png";
 
                 InputStream inputStream = (InputStream) new URL(imageUrl).getContent();
 
@@ -102,7 +99,7 @@ public class ImageHandler {
                 mPatientNView.mImageView.setImageBitmap(mPatientNView.bitmap);
 
                 //saving the image into the cache memory for future use
-                imageCache.put(mPatientNView.mPatientDetailsForDoctorList.getUserID(),
+                imageCache.put(mPatientNView.mName,
                         mPatientNView.bitmap);
             }
 

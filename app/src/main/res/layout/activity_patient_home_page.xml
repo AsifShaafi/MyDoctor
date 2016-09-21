@@ -12,77 +12,111 @@
     <ImageView
         android:id="@+id/patientHomeImage"
         android:layout_width="124dp"
-        android:layout_height="240dp"
-        android:layout_alignBottom="@+id/textView3"
-        android:layout_centerHorizontal="true"
+        android:layout_height="124dp"
         android:contentDescription="patient's image"
         android:padding="4dp"
         android:scaleType="fitXY"
-        android:src="@drawable/default_image" />
-
-    <TextView
-        android:id="@+id/nameTileText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:src="@drawable/default_image"
         android:layout_alignParentTop="true"
-        android:text="Name: "
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        android:layout_centerHorizontal="true" />
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/patientHomeImage"
+        android:layout_above="@+id/linearLayout">
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/nameTileText"
-        android:layout_marginTop="67dp"
-        android:text="Username: "
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:text="Age: "
-        android:textAppearance="?android:attr/textAppearanceLarge" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/patientNameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/nameTileText"
-        android:layout_marginTop="8dp"
-        android:text="New Text"
-        android:textSize="18sp" />
+                <TextView
+                    android:id="@+id/nameTileText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:text="Name: "
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:layout_marginTop="8dp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
 
-    <TextView
-        android:id="@+id/patientUsernameTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/textView3"
-        android:layout_marginTop="8dp"
-        android:text="New Text"
-        android:textSize="18sp" />
+                <TextView
+                    android:id="@+id/patientNameTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="New Text"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+        </LinearLayout>
 
-    <TextView
-        android:id="@+id/patientAgeTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/textView4"
-        android:layout_marginTop="39dp"
-        android:text="New Text" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/patientUsernameTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Username: "
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:layout_alignParentTop="true" />
+
+                <TextView
+                    android:id="@+id/patientUsernameTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New Text"
+                    android:textSize="18sp"
+                    android:layout_centerInParent="true" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/patientAgeTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Age: "
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:layout_alignParentTop="true" />
+
+                <TextView
+                    android:id="@+id/patientAgeTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="New Text"
+                    android:textSize="18sp" />
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -92,7 +126,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentStart="true"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:id="@+id/linearLayout">
 
         <Button
             android:id="@+id/addDoctorButton"
@@ -125,5 +160,15 @@
             android:textAllCaps="false" />
 
     </LinearLayout>
+
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/patientHomeImageProgressBar"
+        android:layout_alignTop="@+id/patientHomeImage"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="34dp"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
 </RelativeLayout>

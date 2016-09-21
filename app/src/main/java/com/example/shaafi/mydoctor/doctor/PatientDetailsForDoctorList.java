@@ -1,7 +1,7 @@
 package com.example.shaafi.mydoctor.doctor;
 
 /**
- * Created by Asif Imiaz Shaafi, on 10-Jul-16.
+ * Created by Asif Imtiaz Shaafi, on 10-Jul-16.
  * Email: a15shaafi.209@gmail.com
  */
 public class PatientDetailsForDoctorList {
