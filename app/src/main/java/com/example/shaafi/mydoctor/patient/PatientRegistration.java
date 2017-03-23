@@ -42,9 +42,6 @@ import static com.example.shaafi.mydoctor.utilities.DialogClass.warringAlert;
 
 public class PatientRegistration extends AppCompatActivity {
 
-    private Bitmap bitmap;
-    private String image_encoded_string;
-
     @BindView(R.id.patient_name)
     EditText mPatientName;
     @BindView(R.id.patient_username)
@@ -55,6 +52,8 @@ public class PatientRegistration extends AppCompatActivity {
     ProgressBar mProgress;
     @BindView(R.id.uploadImageView)
     ImageView mUplodedImage;
+    private Bitmap bitmap;
+    private String image_encoded_string;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,6 +122,13 @@ public class PatientRegistration extends AppCompatActivity {
         if (requestCode == ImageHandler.REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             Uri image = data.getData();
             mUplodedImage.setImageURI(image);
+
+            /***********************************************************************************
+             if any error ocur here during testing in android emulator then
+             comment out the following 3 lines to fix the error..
+             for some reason this happens only with emulator,but in actual phone no error ocur
+             ************************************************************************************/
+
             bitmap = ((BitmapDrawable) mUplodedImage.getDrawable()).getBitmap();
 
             //starting to convert the image into encode image

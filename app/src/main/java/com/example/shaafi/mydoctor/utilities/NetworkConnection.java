@@ -3,6 +3,7 @@ package com.example.shaafi.mydoctor.utilities;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 import java.io.IOException;
 
@@ -26,12 +27,12 @@ public class NetworkConnection {
     /*
             main website link
      */
-    public static final String mainUrl = "http://www.mydoctorbd.cf/";
+//    public static final String mainUrl = "http://www.mydoctorbd.cf/";
 
     /*
             testing link,,database in localhost
      */
-//    public static final String mainUrl = "http://192.168.0.102/my_doctor/";
+    public static final String mainUrl = "http://10.0.2.2/my_doctor/";
 
     /*
         Checks if the the user is connected to the internet/network or not.
@@ -66,6 +67,7 @@ public class NetworkConnection {
             return response.body().string();
         } catch (IOException e) {
             e.printStackTrace();
+            Log.d("json", "getJsonResultFromServer: " + e.getLocalizedMessage());
             return null;
         }
     }

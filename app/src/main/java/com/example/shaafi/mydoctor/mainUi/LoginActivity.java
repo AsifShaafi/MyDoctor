@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
     public static final String DOCTOR_JSON_DATA = "doctorJsonData";
     public static final String CHECK_USER_AS_DOCTOR_PHP = "checkUserAsDoctor.php";
     public static final String CHECK_USER_AS_PATIENT_PHP = "checkUserAsPatient.php";
-
+    public static String CURRENT_USER;
     // UI references. binding all the fields with ButterKnife support library
     @BindView(R.id.username_editText)
     EditText mUsernameView;
@@ -51,10 +51,7 @@ public class LoginActivity extends AppCompatActivity {
     View mLoginFormView;
     @BindView(R.id.passwordInputLayout)
     TextInputLayout mTextInputLayout;
-
     ProgressDialog mProgressDialog;
-
-    public static String CURRENT_USER;
     View focusView = null;
     boolean userTyped = false;
     boolean passwordTyped = false;
@@ -297,6 +294,8 @@ public class LoginActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
 
             mProgressDialog.dismiss();
+
+            Log.d("jsonData", "onPostExecute: " + jsonData);
 
             if (jsonData != null) {
 

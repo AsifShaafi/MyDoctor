@@ -95,7 +95,7 @@ public class ImageHandler {
 
             progressBar.setVisibility(View.GONE);
 
-            if (mPatientNView.bitmap != null) {
+            if (mPatientNView != null && mPatientNView.bitmap != null) {
                 mPatientNView.mImageView.setImageBitmap(mPatientNView.bitmap);
 
                 //saving the image into the cache memory for future use
